@@ -1,17 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Dec 27 15:58:13 2013
-
-Esqueleto de agente usando los servicios web de Flask
-
+Agente usando los servicios web de Flask
 /comm es la entrada para la recepcion de mensajes del agente
 /Stop es la entrada que para el agente
-
-Tiene una funcion AgentBehavior1 que se lanza como un thread concurrente
-
+Tiene una funcion AgenteAlojamientoBehavior que se lanza como un thread concurrente
 Asume que el agente de registro esta en el puerto 9000
 
-@author: javier
 """
 
 from multiprocessing import Process, Queue
@@ -101,11 +95,12 @@ def procesarBusquedaAlojamiento(grafo, contenido):
     logger.info("Recibida peticion de busqueda de alojamientos")
     thread1 = threading.Thread(target=registrarBusquedaAlojamientos,args=(grafo,contenido))
     thread1.start()
-    thread2 = threading.Thread(target=solicitarBusquedaAlojamientos,args=(grafo,contenido))
-    thread2.start()
+    #thread2 = threading.Thread(target=solicitarBusquedaAlojamientos,args=(grafo,contenido))??
+    #thread2.start()??
 
 
-#pensar código, registramos nosotros la busqueda de alojamientos? donde?
+
+#pensar código, registramos nosotros la busqueda de alojamientos? donde? mirar github GestorExternoAgent
 def registrarBusquedaAlojamientos(grafo, contenido):
     busquedaAloj = grafo.value(predicate=RDF.type,object=ECSDIsagma.PeticionAlojamientosDisponibles)
     grafo.add((busquedaAloj))
@@ -115,14 +110,22 @@ def registrarBusquedaAlojamientos(grafo, contenido):
     logger.info("Registrando la peticion de busqueda")
     ontologyFile = open('../data/AlojamientosDB')
 
-    grafoEnvios = Graph()
-    grafoEnvios.bind('default', ECSDIsagma)
-    grafoEnvios.parse(ontologyFile, format='turtle')
-    grafoEnvios += grafo
+    graph = Graph()
+    graph.bind('default', ECSDIsagma)
+    graph.parse(ontologyFile, format='turtle')
+    #graph += grafo (no se si hace falta)
+
+    #aqui hace cosas para cada atributo de su producto externo, igual podiamos hacerlo con atributos de un alojamiento?
+    #sujeto = ECSDI['ProductoExterno' + str(getMessageCount())]
+    #graph.add((sujeto, RDF.type, ECSDI.ProductoExterno))
+    #graph.add((sujeto, ECSDI.Nombre, Literal(nombre, datatype=XSD.string)))
+    #graph.add((sujeto, ECSDI.Precio, Literal(precio, datatype=XSD.float)))
+    #graph.add((sujeto, ECSDI.Descripcion, Literal(descripcion, datatype=XSD.string)))
+
 
     # Guardamos el grafo
-    grafoEnvios.serialize(destination='../data/EnviosDB', format='turtle')
-    logger.info("Registro de envio finalizado")
+    grafoEnvios.serialize(destination='../data/AlojamientosDB', format='turtle')
+    logger.info("Registro de alojamientos finalizado")
 
 
 @app.route("/comm")
