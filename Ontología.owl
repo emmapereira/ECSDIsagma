@@ -1,0 +1,851 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#"
+     xml:base="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:untitled-ontology-3="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3">
+        <rdfs:comment>Agnés Masip, Emma Pereira, Carlos Sansón</rdfs:comment>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cardinalidad -->
+
+    <owl:AnnotationProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cardinalidad"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#ActividadesRecomendadas -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#ActividadesRecomendadas">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Itinerario"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Horario -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Horario">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Transporte"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Tiempo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PagaMediante -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PagaMediante">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Usuario"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Método_de_pago"/>
+        <Cardinalidad>0..1</Cardinalidad>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#SeAlojaEn -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#SeAlojaEn">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Itinerario"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Alojamiento"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#SeLocaliza -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#SeLocaliza">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Localización"/>
+        <rdfs:comment>Relación de la localización de un lugar.</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#TieneTransporte -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#TieneTransporte">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Itinerario"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Transporte"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Aforo -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Aforo">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+        <Cardinalidad>0..1</Cardinalidad>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Calle -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Calle">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Dirección"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Localización"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <Cardinalidad rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</Cardinalidad>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Dirección -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Dirección">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Localización"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Edad -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Edad">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Persona"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+        <Cardinalidad rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</Cardinalidad>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#EsCéntrico -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#EsCéntrico">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Localización"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <Cardinalidad rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</Cardinalidad>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#IBAN -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#IBAN">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Información_de_pago"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Método_de_pago"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <Cardinalidad rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</Cardinalidad>
+        <rdfs:comment>Representa el IBAN de la cuenta bancaria</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Información_de_pago -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Información_de_pago">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Línea -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Línea">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Autobús"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Autocar"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Barco"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Metro"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Tranvía"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Tren"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <Cardinalidad>0..1</Cardinalidad>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Nombre -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Nombre">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Persona"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <Cardinalidad rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</Cardinalidad>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Número -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Número">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Dirección"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Localización"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+        <Cardinalidad rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</Cardinalidad>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Número_de_habitaciones -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Número_de_habitaciones">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Alojamiento"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+        <Cardinalidad rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</Cardinalidad>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Planta -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Planta">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Dirección"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Localización"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+        <Cardinalidad>0..1</Cardinalidad>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Titular -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Titular">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Información_de_pago"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Método_de_pago"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <Cardinalidad rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</Cardinalidad>
+        <rdfs:comment>Nombre del titular de la tarjeta</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Actividad -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Actividad"/>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Actividades -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Actividades">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Respuesta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Adulto -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Adulto">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Persona"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente"/>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente_Informativo -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente_Informativo">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente_Resolvedor -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente_Resolvedor">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Alojamiento -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Alojamiento">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Apartamento -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Apartamento">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Alojamiento"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Autobús -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Autobús">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Transporte"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Autocar -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Autocar">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Transporte"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Avión -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Avión">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Transporte"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Bar -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Bar">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festivo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Barco -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Barco">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Transporte"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#CambiosEnActividades -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#CambiosEnActividades">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Respuesta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cine -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cine">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lúdico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Concierto -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Concierto">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festivo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#ConsultarCambios -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#ConsultarCambios">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Petición"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cultural -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cultural">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Discoteca -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Discoteca">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festivo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Días_de_apertura -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Días_de_apertura">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Tiempo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Edificio_importante -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Edificio_importante">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cultural"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Exposición -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Exposición">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cultural"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Factura -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Factura">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Respuesta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Fechas_de_apertura -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Fechas_de_apertura">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Tiempo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festival -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festival">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festivo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festivo -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festivo">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Horarios_de_apertura -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Horarios_de_apertura">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Tiempo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Hostal -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Hostal">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Alojamiento"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Hotel -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Hotel">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Alojamiento"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Itinerario -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Itinerario"/>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Localización -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Localización"/>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lúdico -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lúdico">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Menor -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Menor">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Persona"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Mensaje -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Mensaje"/>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Metro -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Metro">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Transporte"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Monumento -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Monumento">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cultural"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Museo -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Museo">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cultural"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#MétodoPago -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#MétodoPago">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Respuesta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Método_de_pago -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Método_de_pago">
+        <rdfs:comment>Información de pago de un usuario</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#OfertaAlojamientos -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#OfertaAlojamientos">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Respuesta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#OfertaTransportes -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#OfertaTransportes">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Respuesta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Parque -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Parque">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lúdico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Persona -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Persona">
+        <rdfs:comment>Representación de una persona</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Petición -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Petición">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Mensaje"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónActividadesDisponibles -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónActividadesDisponibles">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Petición"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónAlojamientosDisponibles -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónAlojamientosDisponibles">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Petición"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónBúsqueda -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónBúsqueda">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Petición"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónConfirmaciónPago -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónConfirmaciónPago">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Petición"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónMétodoPago -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónMétodoPago">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Petición"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónPrevisiónMeteorológica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónPrevisiónMeteorológica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Petición"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónRealizarPago -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónRealizarPago">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Petición"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónTransportesDisponibles -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónTransportesDisponibles">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Petición"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónValoración -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PeticiónValoración">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Petición"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PrevisiónMeteorológica -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#PrevisiónMeteorológica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Respuesta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Protocolo -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Protocolo">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Mensaje"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Respuesta -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Respuesta">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Mensaje"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Restaurante -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Restaurante">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festivo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Taxi -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Taxi">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Transporte"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Teatro -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Teatro">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lúdico"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Tiempo -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Tiempo">
+        <rdfs:comment>Definición de datos de tiempo.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Transporte -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Transporte">
+        <rdfs:comment>Definición de un medio de transporte.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Tranvía -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Tranvía">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Transporte"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Tren -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Tren">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Transporte"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Usuario -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Usuario">
+        <rdfs:comment>Usuario registrado en el sistema</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Valoración -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Valoración">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Respuesta"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Promotor_de_Itinerarios -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Promotor_de_Itinerarios">
+        <rdf:type rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente_Resolvedor"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Responsable_de_Actividades -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Responsable_de_Actividades">
+        <rdf:type rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente_Informativo"/>
+        <rdf:type rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente_Resolvedor"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Responsable_de_Almacenamiento -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Responsable_de_Almacenamiento">
+        <rdf:type rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente_Resolvedor"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Responsable_de_Alojamiento -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Responsable_de_Alojamiento">
+        <rdf:type rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente_Informativo"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Responsable_de_Desplazamiento -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Responsable_de_Desplazamiento">
+        <rdf:type rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente_Informativo"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Responsable_de_presentación -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Responsable_de_presentación">
+        <rdf:type rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente_Resolvedor"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Tesorero -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Tesorero">
+        <rdf:type rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Agente_Resolvedor"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+
