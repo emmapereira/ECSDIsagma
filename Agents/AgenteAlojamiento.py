@@ -16,13 +16,14 @@ Asume que el agente de registro esta en el puerto 9000
 
 from multiprocessing import Process, Queue
 import socket
+import argparse
 
 from rdflib import Namespace, Graph
 from flask import Flask
-
 from Utilities.FlaskServer import shutdown_server
 from Utilities.Agent import Agent
 from Utilities.OntoNamespaces import ECSDIsagma
+from Utilities.Logging import config_logger
 
 __author__ = 'sagma'
 
@@ -107,15 +108,15 @@ def procesarBusquedaAlojamiento(grafo, contenido):
 #pensar código, registramos nosotros la busqueda de alojamientos? donde?
 def registrarBusquedaAlojamientos(grafo, contenido):
     busquedaAloj = grafo.value(predicate=RDF.type,object=ECSDIsagma.PeticionAlojamientosDisponibles)
-    grafo.add((busquedaAloj,ECSDIsagma.Pagado,Literal(False,datatype=XSD.boolean)))
-    prioridad = grafo.value(subject=contenido, predicate=ECSDI.Prioridad)
-    fecha = datetime.now() + timedelta(days=int(prioridad))
-    grafo.add((busquedaAloj,ECSDIsagma.FechaEntrega,Literal(fecha, datatype=XSD.date)))
+    grafo.add((busquedaAloj))
+    # prioridad = grafo.value(subject=contenido, predicate=ECSDI.Prioridad)
+    # fecha = datetime.now() # + timedelta(days=int(prioridad))
+    # grafo.add((busquedaAloj,ECSDIsagma.FechaEntrega,Literal(fecha, datatype=XSD.date)))
     logger.info("Registrando la peticion de busqueda")
     ontologyFile = open('../data/AlojamientosDB')
 
     grafoEnvios = Graph()
-    grafoEnvios.bind('default', ECSDI)
+    grafoEnvios.bind('default', ECSDIsagma)
     grafoEnvios.parse(ontologyFile, format='turtle')
     grafoEnvios += grafo
 
@@ -235,7 +236,7 @@ def AgenteAlojamientoBehavior(cola):
 
 if __name__ == '__main__':
     # Ponemos en marcha los behaviors
-    ab1 = Process(target=agentbehavior1, args=(cola1,))
+    ab1 = Process(target=AgenteAlojamientoBehavior, args=(cola1,))
     ab1.start()
 
     # Ponemos en marcha el servidor
