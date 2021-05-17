@@ -96,6 +96,7 @@ def procesarBusquedaAlojamiento(grafo, contenido):
     logger.info("Recibida peticion de busqueda de alojamientos")
     thread = threading.Thread(target=registrarBusquedaAlojamientos,args=(grafo,contenido))
     thread.start()
+    resultadoComunicacion = Graph()
     #thread2 = threading.Thread(target=solicitarBusquedaAlojamientos,args=(grafo,contenido))??
     #thread2.start()??
 
@@ -104,7 +105,8 @@ def procesarBusquedaAlojamiento(grafo, contenido):
 #pensar código, registramos nosotros la busqueda de alojamientos? donde? mirar github GestorExternoAgent
 def registrarBusquedaAlojamientos(grafo, contenido):
     busquedaAloj = grafo.value(predicate=RDF.type,object=ECSDIsagma.PeticionAlojamientosDisponibles)
-    grafo.add((busquedaAloj))
+    grafo.add((busquedaAloj)) # makes no sense
+    
     # prioridad = grafo.value(subject=contenido, predicate=ECSDI.Prioridad)
     # fecha = datetime.now() # + timedelta(days=int(prioridad))
     # grafo.add((busquedaAloj,ECSDIsagma.FechaEntrega,Literal(fecha, datatype=XSD.date)))
