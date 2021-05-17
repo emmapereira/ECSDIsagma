@@ -11,6 +11,7 @@ Asume que el agente de registro esta en el puerto 9000
 from multiprocessing import Process, Queue
 import socket
 import argparse
+import threading
 
 from rdflib import Namespace, Graph
 from flask import Flask
@@ -93,8 +94,8 @@ app = Flask(__name__)
 
 def procesarBusquedaAlojamiento(grafo, contenido):
     logger.info("Recibida peticion de busqueda de alojamientos")
-    thread1 = threading.Thread(target=registrarBusquedaAlojamientos,args=(grafo,contenido))
-    thread1.start()
+    thread = threading.Thread(target=registrarBusquedaAlojamientos,args=(grafo,contenido))
+    thread.start()
     #thread2 = threading.Thread(target=solicitarBusquedaAlojamientos,args=(grafo,contenido))??
     #thread2.start()??
 
