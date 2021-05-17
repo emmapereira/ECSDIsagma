@@ -412,7 +412,7 @@
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Bar -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Bar">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festivo"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
     </owl:Class>
     
 
@@ -436,7 +436,7 @@
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cine -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cine">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lúdico"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
     </owl:Class>
     
 
@@ -444,7 +444,7 @@
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Concierto -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Concierto">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Actividad"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festivo"/>
     </owl:Class>
     
 
@@ -460,7 +460,7 @@
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cultural -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cultural">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Actividad"/>
     </owl:Class>
     
 
@@ -468,7 +468,7 @@
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Discoteca -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Discoteca">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festivo"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
     </owl:Class>
     
 
@@ -484,7 +484,7 @@
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Edificio_importante -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Edificio_importante">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cultural"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
     </owl:Class>
     
 
@@ -492,7 +492,7 @@
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Exposición -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Exposición">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Actividad"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cultural"/>
     </owl:Class>
     
 
@@ -516,7 +516,7 @@
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festival -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festival">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Actividad"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festivo"/>
     </owl:Class>
     
 
@@ -524,7 +524,7 @@
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festivo -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festivo">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Actividad"/>
     </owl:Class>
     
 
@@ -581,10 +581,10 @@
     
 
 
-    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lúdico -->
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lúdica -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lúdico">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lúdica">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Actividad"/>
     </owl:Class>
     
 
@@ -614,7 +614,7 @@
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Monumento -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Monumento">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cultural"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
     </owl:Class>
     
 
@@ -622,7 +622,7 @@
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Museo -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Museo">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Cultural"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
     </owl:Class>
     
 
@@ -654,7 +654,7 @@
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Parque -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Parque">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lúdico"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
     </owl:Class>
     
 
@@ -767,7 +767,7 @@
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Restaurante -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Restaurante">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Festivo"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
     </owl:Class>
     
 
@@ -783,7 +783,7 @@
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Teatro -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Teatro">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lúdico"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/untitled-ontology-3#Lugar"/>
     </owl:Class>
     
 
