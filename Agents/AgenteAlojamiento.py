@@ -11,6 +11,7 @@ Asume que el agente de registro esta en el puerto 9000
 from multiprocessing import Process, Queue
 import socket
 import argparse
+import threading
 
 from rdflib import Namespace, Graph
 from flask import Flask
@@ -93,15 +94,24 @@ app = Flask(__name__)
 
 def procesarBusquedaAlojamiento(grafo, contenido):
     logger.info("Recibida peticion de busqueda de alojamientos")
+<<<<<<< HEAD
     thread1 = threading.Thread(target=registrarBusquedaAlojamientos,args=(grafo,contenido))
     thread1.start()
+=======
+    thread = threading.Thread(target=registrarBusquedaAlojamientos,args=(grafo,contenido))
+    thread.start()
+    resultadoComunicacion = Graph()
+    #thread2 = threading.Thread(target=solicitarBusquedaAlojamientos,args=(grafo,contenido))??
+    #thread2.start()??
+>>>>>>> 519c8d2bfc51645a6e05a6557b3eeb71e01aeb05
 
 
 
 #pensar código, registramos nosotros la busqueda de alojamientos? donde? mirar github GestorExternoAgent
 def registrarBusquedaAlojamientos(grafo, contenido):
     busquedaAloj = grafo.value(predicate=RDF.type,object=ECSDIsagma.PeticionAlojamientosDisponibles)
-    grafo.add((busquedaAloj))
+    grafo.add((busquedaAloj)) # makes no sense
+    
     # prioridad = grafo.value(subject=contenido, predicate=ECSDI.Prioridad)
     # fecha = datetime.now() # + timedelta(days=int(prioridad))
     # grafo.add((busquedaAloj,ECSDIsagma.FechaEntrega,Literal(fecha, datatype=XSD.date)))
