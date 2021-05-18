@@ -95,8 +95,6 @@ def procesarBusquedaAlojamiento(grafo, contenido):
     logger.info("Recibida peticion de busqueda de alojamientos")
     thread1 = threading.Thread(target=registrarBusquedaAlojamientos,args=(grafo,contenido))
     thread1.start()
-    #thread2 = threading.Thread(target=solicitarBusquedaAlojamientos,args=(grafo,contenido))??
-    #thread2.start()??
 
 
 
