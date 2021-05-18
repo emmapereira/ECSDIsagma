@@ -252,7 +252,7 @@ def comunicacion():
             # Por ahora simplemente retornamos un Inform-done
             gr = build_message(Graph(),
                                ACL['inform'],
-                               sender=InfoAgent.uri,
+                               sender=AgenteAlojamiento.uri,
                                msgcnt=mss_cnt,
                                receiver=msgdic['sender'], )
 
