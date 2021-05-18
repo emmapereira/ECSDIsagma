@@ -13,11 +13,16 @@ import socket
 import argparse
 import threading
 
-from rdflib import Namespace, Graph
+from rdflib import Namespace, Graph, Literal
+from rdflib.namespace import FOAF, RDF
 from flask import Flask
+
+from Utilities.ACL import ACL
 from Utilities.FlaskServer import shutdown_server
 from Utilities.Agent import Agent
+from Utilities.ACLMessages import build_message, send_message, get_message_properties
 from Utilities.OntoNamespaces import ECSDIsagma
+from Utilities.DSO import DSO
 from Utilities.Logging import config_logger
 
 __author__ = 'sagma'
@@ -94,28 +99,43 @@ app = Flask(__name__)
 
 def procesarBusquedaAlojamiento(grafo, contenido):
     logger.info("Recibida peticion de busqueda de alojamientos")
-<<<<<<< HEAD
     thread1 = threading.Thread(target=registrarBusquedaAlojamientos,args=(grafo,contenido))
     thread1.start()
-=======
-    thread = threading.Thread(target=registrarBusquedaAlojamientos,args=(grafo,contenido))
-    thread.start()
-    resultadoComunicacion = Graph()
-    #thread2 = threading.Thread(target=solicitarBusquedaAlojamientos,args=(grafo,contenido))??
-    #thread2.start()??
->>>>>>> 519c8d2bfc51645a6e05a6557b3eeb71e01aeb05
 
 
 
 #pensar código, registramos nosotros la busqueda de alojamientos? donde? mirar github GestorExternoAgent
 def registrarBusquedaAlojamientos(grafo, contenido):
+    nombre = None
+    numero = None
+    calle = None
+    planta = None
+    esCentrico = False
+    numHabitaciones = None
+    precio = None
+    for a,b,c in graph:
+        if b == ECSDIsagma.Nombre:
+            nombre = c
+        elif b == ECSDIsagma.Numero:
+            numero = c
+        elif b == ECSDIsagma.Calle:
+            calle = c
+        elif b == ECSDIsagma.Planta:
+            planta = c
+        elif b == ECSDIsagma.EsCentrico:
+            esCentrico = c
+        elif b == ECSDI.Numero_de_habitaciones:
+            numHabitaciones = c
+        elif b == ECSDI.Precio:
+            precio = c
+
     busquedaAloj = grafo.value(predicate=RDF.type,object=ECSDIsagma.PeticionAlojamientosDisponibles)
-    grafo.add((busquedaAloj)) # makes no sense
-    
+    grafo.add((busquedaAloj))
     # prioridad = grafo.value(subject=contenido, predicate=ECSDI.Prioridad)
     # fecha = datetime.now() # + timedelta(days=int(prioridad))
     # grafo.add((busquedaAloj,ECSDIsagma.FechaEntrega,Literal(fecha, datatype=XSD.date)))
     logger.info("Registrando la peticion de busqueda")
+    # Añadimos el alojamiento a la base de datos de alojamientos
     ontologyFile = open('../data/AlojamientosDB')
 
     graph = Graph()
@@ -123,17 +143,57 @@ def registrarBusquedaAlojamientos(grafo, contenido):
     graph.parse(ontologyFile, format='turtle')
     #graph += grafo (no se si hace falta)
 
-    #aqui hace cosas para cada atributo de su producto externo, igual podiamos hacerlo con atributos de un alojamiento?
-    #sujeto = ECSDI['ProductoExterno' + str(getMessageCount())]
-    #graph.add((sujeto, RDF.type, ECSDI.ProductoExterno))
-    #graph.add((sujeto, ECSDI.Nombre, Literal(nombre, datatype=XSD.string)))
-    #graph.add((sujeto, ECSDI.Precio, Literal(precio, datatype=XSD.float)))
-    #graph.add((sujeto, ECSDI.Descripcion, Literal(descripcion, datatype=XSD.string)))
-
+    sujeto = ECSDI['Alojamiento' + str(getMessageCount())]
+    graph.add((sujeto, RDF.type, ECSDI.Alojamiento))
+    graph.add((sujeto, ECSDIsagma.Nombre, Literal(nombre, datatype=XSD.string)))
+    graph.add((sujeto, ECSDIsagma.Numero, Literal(numero, datatype=XSD.int)))
+    graph.add((sujeto, ECSDIsagma.Calle, Literal(calle, datatype=XSD.string)))
+    graph.add((sujeto, ECSDIsagma.Planta, Literal(planta, datatype=XSD.int)))
+    graph.add((sujeto, ECSDIsagma.EsCentrico, Literal(esCentrico, datatype=XSD.boolean)))
+    graph.add((sujeto, ECSDIsagma.Numero_de_habitaciones, Literal(numHabitaciones, datatype=XSD.int)))
+    graph.add((sujeto, ECSDIsagma.Precio, Literal(precio, datatype=XSD.int)))
 
     # Guardamos el grafo
-    grafoEnvios.serialize(destination='../data/AlojamientosDB', format='turtle')
+    graph.serialize(destination='../data/AlojamientosDB', format='turtle')
     logger.info("Registro de alojamientos finalizado")
+
+def register_message():
+    """
+    Envia un mensaje de registro al servicio de registro
+    usando una performativa Request y una accion Register del
+    servicio de directorio
+
+    :param gmess:
+    :return:
+    """
+
+    logger.info('Nos registramos')
+
+    global mss_cnt
+
+    gmess = Graph()
+
+    # Construimos el mensaje de registro
+    gmess.bind('foaf', FOAF)
+    gmess.bind('dso', DSO)
+    reg_obj = agn[AgenteAlojamiento.name + '-Register']
+    gmess.add((reg_obj, RDF.type, DSO.Register))
+    gmess.add((reg_obj, DSO.Uri, AgenteAlojamiento.uri))
+    gmess.add((reg_obj, FOAF.name, Literal(AgenteAlojamiento.name)))
+    gmess.add((reg_obj, DSO.Address, Literal(AgenteAlojamiento.address)))
+    gmess.add((reg_obj, DSO.AgentType, DSO.HotelsAgent))
+
+    # Lo metemos en un envoltorio FIPA-ACL y lo enviamos
+    gr = send_message(
+        build_message(gmess, perf=ACL.request,
+                      sender=AgenteAlojamiento.uri,
+                      receiver=DirectoryAgent.uri,
+                      content=reg_obj,
+                      msgcnt=mss_cnt),
+        DirectoryAgent.address)
+    mss_cnt += 1
+
+    return gr
 
 
 @app.route("/comm")

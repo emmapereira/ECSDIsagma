@@ -13,7 +13,7 @@ __author__ = 'javier'
 from rdflib import Graph, URIRef
 import requests
 from rdflib.namespace import RDF, OWL
-import ACL
+from Utilities.OntoNamespaces import ACL, DSO
 
 
 def build_message(gmess, perf, sender=None, receiver=None,  content=None, msgcnt=0):
