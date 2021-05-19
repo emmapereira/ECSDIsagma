@@ -204,10 +204,24 @@ def comunicacion():
                         fechavuelta = gm.value(subject=restriccion, predicate=ECSDIsagma.FechaVuelta)
                         logger.info('FechaVuelta: ' + fechavuelta)
                         restricciones_dict['date2'] = fechavuelta
-                    elif gm.value(subject=restriccion, predicate=RDF.type) == ECSDIsagma.RestriccionPrecioMinimo:
-                        precio_min = gm.value(subject=restriccion, predicate=ECSDIsagma.Precio)
-                        logger.info('Precio minimo: ' + precio_min)
-                        restricciones_dict['min_price'] = precio_min.toPython()
+                    elif gm.value(subject=restriccion, predicate=RDF.type) == ECSDIsagma.RestriccionRangoPrecioAloj:
+                        precio_min_aloj = gm.value(subject=restriccion, predicate=ECSDIsagma.Precio_min)
+                        precio_max_aloj = gm.value(subject=restriccion, predicate=ECSDIsagma.Precio_max)
+                        if precio_min_aloj:
+                            logger.info('Precio minimo alojamiento: ' + precio_min_aloj)
+                            restricciones_dict['min_price_housing'] = precio_min_aloj.toPython()
+                        if precio_max_aloj:
+                            logger.info('Precio maximo alojamiento: ' + precio_max_aloj)
+                            restricciones_dict['max_price_housing'] = precio_max_aloj.toPython()
+                    elif gm.value(subject=restriccion, predicate=RDF.type) == ECSDIsagma.RestriccionRangoPrecioTrans:
+                        precio_min_trans = gm.value(subject=restriccion, predicate=ECSDIsagma.Precio_min)
+                        precio_max_trans = gm.value(subject=restriccion, predicate=ECSDIsagma.Precio_max)
+                        if precio_min_trans:
+                            logger.info('Precio minimo transporte: ' + precio_min_trans)
+                            restricciones_dict['min_price_transport'] = precio_min_trans.toPython()
+                        if precio_max_trans:
+                            logger.info('Precio maximo alojamiento: ' + precio_max_trans)
+                            restricciones_dict['max_price_transport'] = precio_max_trans.toPython()
                     elif gm.value(subject=restriccion, predicate=RDF.type) == ECSDIsagma.RestriccionPrecioMaximo:
                         precio_max = gm.value(subject=restriccion, predicate=ECSDIsagma.Precio)
                         logger.info('Precio maximo: ' + precio_max)
@@ -221,6 +235,24 @@ def comunicacion():
                     #gm.remove((item, None, None))
 
             #    procesarBusquedaAlojamiento(gm, content)
+
+            else if accion == ECSDIsagma.peticionConfirmarItinerario
+                logger.info("Procesando peticion de confirmacion de itinerario")
+
+                for item in gm.subjects(RDF.type, ACL.FipaAclMessage):
+                    gm.remove((item, None, None))
+
+                gr = gm
+
+                #llamamos al tesorero para que obtenga la info de pago del usuario
+                tesorero = get_agent_info(agn.AgenteTesorero, DirectoryAgent, AgentePresentacion, get_count())
+
+                gr = send_message(
+                    build_message(gr, perf=ACL.request, sender=AgentePresentacion.uri, receiver=tesorero.uri,
+                                  msgcnt=get_count(),
+                                  content=content), tesorero.address)
+
+                
 
                 # No habia ninguna accion en el mensaje
             else:
@@ -256,6 +288,32 @@ def tidyup():
     """
     global cola1
     cola1.put(0)
+
+def findItinerario(incenter=None, date1=None, date2=None, min_price_housing=0.0, max_price_housing=sys.float_info.max, min_price_transport=0.0, max_price_transport=sys.float_info.max):
+
+    #realizamos las peticiones para crear el itinerario
+    logger.info("Vamos a buscar un itinerario para ti")
+
+    search = None
+    for item in gm.subjects(RDF.type, ECSDIsagma.Compra):
+        search = item
+
+    gm.remove((content, None, None))
+    for item in gm.subjects(RDF.type, ACL.FipaAclMessage):
+        gm.remove((item, None, None))
+
+                content = ECSDI['Vull_comprar_' + str(get_count())]
+                gm.add((content, RDF.type, ECSDI.Vull_comprar))
+                gm.add((content, ECSDI.compra, URIRef(sell)))
+                gr = gm
+
+                financial = get_agent_info(agn.FinancialAgent, DirectoryAgent, SellerAgent, get_count())
+
+                gr = send_message(
+                    build_message(gr, perf=ACL.request, sender=SellerAgent.uri, receiver=financial.uri,
+                                  msgcnt=get_count(),
+                                  content=content), financial.address)
+
 
 
 def AgenteAlojamientoBehavior(cola):
