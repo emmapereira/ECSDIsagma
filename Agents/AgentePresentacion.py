@@ -122,17 +122,17 @@ def register_message():
     # Construimos el mensaje de registro
     gmess.bind('foaf', FOAF)
     gmess.bind('dso', DSO)
-    reg_obj = agn[AgenteAlojamiento.name + '-Register']
+    reg_obj = agn[AgentePresentacion.name + '-Register']
     gmess.add((reg_obj, RDF.type, DSO.Register))
-    gmess.add((reg_obj, DSO.Uri, AgenteAlojamiento.uri))
-    gmess.add((reg_obj, FOAF.name, Literal(AgenteAlojamiento.name)))
-    gmess.add((reg_obj, DSO.Address, Literal(AgenteAlojamiento.address)))
+    gmess.add((reg_obj, DSO.Uri, AgentePresentacion.uri))
+    gmess.add((reg_obj, FOAF.name, Literal(AgentePresentacion.name)))
+    gmess.add((reg_obj, DSO.Address, Literal(AgentePresentacion.address)))
     gmess.add((reg_obj, DSO.AgentType, DSO.HotelsAgent))
 
     # Lo metemos en un envoltorio FIPA-ACL y lo enviamos
     gr = send_message(
         build_message(gmess, perf=ACL.request,
-                      sender=AgenteAlojamiento.uri,
+                      sender=AgentePresentacion.uri,
                       receiver=DirectoryAgent.uri,
                       content=reg_obj,
                       msgcnt=mss_cnt),
@@ -252,7 +252,7 @@ def comunicacion():
                                   msgcnt=get_count(),
                                   content=content), almacenador.address)
 
-                                  
+
 
             else if accion == ECSDIsagma.peticionConfirmarItinerario
                 logger.info("Procesando peticion de confirmacion de itinerario")
@@ -273,6 +273,7 @@ def comunicacion():
 
                 #faltan cosas probablemente
 
+                #provisional todo
                 #enviar mensaje a agente alojamiento para pedir datos pago
                 alojamiento = get_agent_info(agn.AgenteAlojamiento, DirectoryAgent, AgentePresentacion, get_count())
                 gr = send_message(
