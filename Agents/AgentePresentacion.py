@@ -228,13 +228,31 @@ def comunicacion():
                         restricciones_dict['max_price'] = precio_max.toPython()
 
 
-                gr = findItinerario(**restriccions_dict)
+                #enviar mensaje definir servicio alojamiento
+                #pasarle las preferencias?
+                alojamiento = get_agent_info(agn.AgenteAlojamiento, DirectoryAgent, AgentePresentacion, get_count())
+                gr = send_message(
+                    build_message(gr, perf=ACL.request, sender=AgentePresentacion.uri, receiver=alojamiento.uri,
+                                  msgcnt=get_count(),
+                                  content=content), alojamiento.address)
 
+                #enviar mensaje definir servicio AgenteDesplazamiento
+                #pasarle las preferencias?
+                desplazamiento = get_agent_info(agn.AgenteDesplazamiento, DirectoryAgent, AgentePresentacion, get_count())
+                gr = send_message(
+                    build_message(gr, perf=ACL.request, sender=AgentePresentacion.uri, receiver=desplazamiento.uri,
+                                  msgcnt=get_count(),
+                                  content=content), desplazamiento.address)
 
-                #for item in gm.subjects(RDF.type, ACL.FipaAclMessage):
-                    #gm.remove((item, None, None))
+                #enviar mensaje guardar preferencias usuario al almacenador
+                #pasarle las preferencias?
+                almacenador = get_agent_info(agn.AgenteAlmacenamiento, DirectoryAgent, AgentePresentacion, get_count())
+                gr = send_message(
+                    build_message(gr, perf=ACL.request, sender=AgentePresentacion.uri, receiver=almacenador.uri,
+                                  msgcnt=get_count(),
+                                  content=content), almacenador.address)
 
-            #    procesarBusquedaAlojamiento(gm, content)
+                                  
 
             else if accion == ECSDIsagma.peticionConfirmarItinerario
                 logger.info("Procesando peticion de confirmacion de itinerario")
@@ -242,19 +260,50 @@ def comunicacion():
                 for item in gm.subjects(RDF.type, ACL.FipaAclMessage):
                     gm.remove((item, None, None))
 
+                #mostrar el itinerario al agente usuario?
+
+
+            else if accion == ECSDIsagma.ConfirmacionItinerario
+                logger.info("Procesando Confirmacion de itinerario")
+
+                for item in gm.subjects(RDF.type, ACL.FipaAclMessage):
+                    gm.remove((item, None, None))
+
                 gr = gm
+
+                #faltan cosas probablemente
+
+                #enviar mensaje a agente alojamiento para pedir datos pago
+                alojamiento = get_agent_info(agn.AgenteAlojamiento, DirectoryAgent, AgentePresentacion, get_count())
+                gr = send_message(
+                    build_message(gr, perf=ACL.request, sender=AgentePresentacion.uri, receiver=alojamiento.uri,
+                                  msgcnt=get_count(),
+                                  content=content), alojamiento.address)
+
+                #enviar mensaje a agente desplazamiento para pedir datos pago
+                desplazamiento = get_agent_info(agn.AgenteDesplazamiento, DirectoryAgent, AgentePresentacion, get_count())
+                gr = send_message(
+                    build_message(gr, perf=ACL.request, sender=AgentePresentacion.uri, receiver=desplazamiento.uri,
+                                  msgcnt=get_count(),
+                                  content=content), desplazamiento.address)
 
                 #llamamos al tesorero para que obtenga la info de pago del usuario
                 tesorero = get_agent_info(agn.AgenteTesorero, DirectoryAgent, AgentePresentacion, get_count())
-
                 gr = send_message(
                     build_message(gr, perf=ACL.request, sender=AgentePresentacion.uri, receiver=tesorero.uri,
                                   msgcnt=get_count(),
                                   content=content), tesorero.address)
 
-                
+                #si el pago fue correcto, llamamos al almacenador para guardar el itinerario generado
+                #pasarle el itinerario?
+                almacenador = get_agent_info(agn.AgenteAlmacenamiento, DirectoryAgent, AgentePresentacion, get_count())
+                gr = send_message(
+                    build_message(gr, perf=ACL.request, sender=AgentePresentacion.uri, receiver=almacenador.uri,
+                                  msgcnt=get_count(),
+                                  content=content), almacenador.address)
 
-                # No habia ninguna accion en el mensaje
+
+            # No habia ninguna accion en el mensaje
             else:
                 gr = build_message(Graph(),
                                 ACL['not-understood'],
@@ -289,30 +338,7 @@ def tidyup():
     global cola1
     cola1.put(0)
 
-def findItinerario(incenter=None, date1=None, date2=None, min_price_housing=0.0, max_price_housing=sys.float_info.max, min_price_transport=0.0, max_price_transport=sys.float_info.max):
-
-    #realizamos las peticiones para crear el itinerario
-    logger.info("Vamos a buscar un itinerario para ti")
-
-    search = None
-    for item in gm.subjects(RDF.type, ECSDIsagma.Compra):
-        search = item
-
-    gm.remove((content, None, None))
-    for item in gm.subjects(RDF.type, ACL.FipaAclMessage):
-        gm.remove((item, None, None))
-
-                content = ECSDI['Vull_comprar_' + str(get_count())]
-                gm.add((content, RDF.type, ECSDI.Vull_comprar))
-                gm.add((content, ECSDI.compra, URIRef(sell)))
-                gr = gm
-
-                financial = get_agent_info(agn.FinancialAgent, DirectoryAgent, SellerAgent, get_count())
-
-                gr = send_message(
-                    build_message(gr, perf=ACL.request, sender=SellerAgent.uri, receiver=financial.uri,
-                                  msgcnt=get_count(),
-                                  content=content), financial.address)
+#def findItinerario(incenter=None, date1=None, date2=None, min_price_housing=0.0, max_price_housing=sys.float_info.max, min_price_transport=0.0, max_price_transport=sys.float_info.max, gr):
 
 
 
