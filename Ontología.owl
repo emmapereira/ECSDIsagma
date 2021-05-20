@@ -478,14 +478,6 @@
     
 
 
-    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#ConsultarCambios -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#ConsultarCambios">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Petición"/>
-    </owl:Class>
-    
-
-
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Cultural -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Cultural">
@@ -562,22 +554,6 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Gastronómica">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Actividad"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#GuardarItinerario -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#GuardarItinerario">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Petición"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#GuardarPreferencias -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#GuardarPreferencias">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Petición"/>
     </owl:Class>
     
 
@@ -712,6 +688,14 @@
     
 
 
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PeticionConsultarCambios -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PeticionConsultarCambios">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Petición"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PeticionDefinirServicioAlojamiento -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PeticionDefinirServicioAlojamiento">
@@ -723,6 +707,22 @@
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PeticionDefinirServicioDesplazamiento -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PeticionDefinirServicioDesplazamiento">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Petición"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PeticionGuardarItinerario -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PeticionGuardarItinerario">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Petición"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PeticionGuardarPreferencias -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PeticionGuardarPreferencias">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Petición"/>
     </owl:Class>
     
