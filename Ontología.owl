@@ -91,6 +91,17 @@
     
 
 
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Origen -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Origen">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Ticket_Transporte"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Lugar"/>
+        <rdfs:comment>Lugar de salida de un método de transporte para un viaje.</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PagaMediante -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PagaMediante">
@@ -106,17 +117,6 @@
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Restringe">
         <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Restriccion"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PeticiónBúsqueda"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Salida -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Salida">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Ticket_Transporte"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Lugar"/>
-        <rdfs:comment>Lugar de salida de un método de transporte para un viaje.</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -566,6 +566,22 @@
     
 
 
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#GuardarItinerario -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#GuardarItinerario">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Petición"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#GuardarPreferencias -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#GuardarPreferencias">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Petición"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Horario_de_apertura -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Horario_de_apertura">
@@ -692,6 +708,22 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Persona">
         <rdfs:comment>Representación de una persona</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PeticionDefinirServicioAlojamiento -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PeticionDefinirServicioAlojamiento">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Petición"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PeticionDefinirServicioDesplazamiento -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#PeticionDefinirServicioDesplazamiento">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma#Petición"/>
     </owl:Class>
     
 
