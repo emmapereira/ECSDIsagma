@@ -50,4 +50,4 @@ DSO = Namespace('http://www.semanticweb.org/directory-service-ontology#')
 AMO = Namespace('http://www.semanticweb.org/houcros/ontologies/2015/4/agentsMessages')
 
 
-ECSDIsagma = Namespace('http://my.namespace.org/ECSDIsagma/')
+ECSDIsagma = Namespace('http://semanticweb.org/sansom/ontologies/2021/4/ECSDIsagma')

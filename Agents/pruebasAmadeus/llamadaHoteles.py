@@ -7,6 +7,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--checkin', type=str, help="Format YYYY-MM-DD")
 parser.add_argument('--checkout', type=str, help="Format YYYY-MM-DD")
 parser.add_argument('--adults', type=int, help="Number of adult guests (1-9) per room")
+parser.add_argument('--rooms', type=int, help="Number of rooms (1-9)")
 
 
 
@@ -21,7 +22,7 @@ def printHotels(data):
         print("NOMBRE: ", hotelName)
         print("DESCRIPCION: ", hotelDescription)
         # print("PRICE: ", hotelPrice)
-        print("===========================")
+        print("===============================")
         # print(data[0])
 
 
@@ -58,17 +59,22 @@ if args.adults is None:
 else:
     adults = args.adults
 
+if args.rooms is None:
+    rooms = 2
+else:
+    rooms = args.rooms
+
 try:
     response = amadeus.shopping.hotel_offers.get(
         cityCode = 'BCN',
+        radius=50,
         checkInDate = checkInDate,
         checkOutDate = checkOutDate,
+        roomQuantity = rooms,
         adults = adults,
-        latitude = 36.7319625,
-        longitude = -6.4393172,
-        radius = 50,
-        bestRateOnly = False
+        radiusUnit = 'KM'
         )
-    printHotels(response.data)
+    #printHotels(response.data)
+    print(response.data)
 except ResponseError as error:
     print(error)

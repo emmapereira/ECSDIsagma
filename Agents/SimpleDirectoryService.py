@@ -25,16 +25,16 @@ from flask import Flask, request, render_template
 from rdflib import Graph, RDF, Namespace, RDFS, Literal
 from rdflib.namespace import FOAF
 
-from AgentUtil.ACL import ACL
-from AgentUtil.FlaskServer import shutdown_server
-from AgentUtil.Agent import Agent
-from AgentUtil.ACLMessages import build_message, get_message_properties
-from AgentUtil.Logging import config_logger
-from AgentUtil.DSO import DSO
-from AgentUtil.Util import gethostname
+from Utilities.ACL import ACL
+from Utilities.FlaskServer import shutdown_server
+from Utilities.Agent import Agent
+from Utilities.ACLMessages import build_message, get_message_properties
+from Utilities.Logging import config_logger
+from Utilities.DSO import DSO
+# from Utilities.Util import gethostname
 import socket
 
-__author__ = 'javier'
+__author__ = 'sagma'
 
 # Definimos los parametros de la linea de comandos
 parser = argparse.ArgumentParser()
@@ -58,7 +58,9 @@ else:
 
 if args.open:
     hostname = '0.0.0.0'
-    hostaddr = gethostname()
+    # hostaddr = gethostname()
+    # hostaddr = '37.223.113.140'
+    hostaddr = socket.gethostname()
 else:
     hostaddr = hostname = socket.gethostname()
 
@@ -253,10 +255,10 @@ def agentbehavior1(cola):
         v = cola.get()
         if v == 0:
             print(v)
+            print("server shutdown")
             return 0
         else:
             print(v)
-
 
 if __name__ == '__main__':
     # Ponemos en marcha los behaviours como procesos

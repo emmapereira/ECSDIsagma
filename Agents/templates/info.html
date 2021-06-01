@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Peticion de plan de viaje</title>
+</head>
+<body>
+<form method="get" action="/stop">
+    <h3>Preferencias desplazamiento</h3>
+    <p><label>Ciudad origen</label> </p>
+    <select name="ciudadOrigen" >
+        {% for t in cities %}
+        <option value={{t}}>{{t}}</option>
+        {% endfor %}
+        <option value=BCN>Barcelona</option>
+        <option value=MDR>Madrid</option>
+        <option value=LDN>London</option>
+    </select>
+    <p><label>Ciudad Destido</label> </p>
+    <select name="ciudadDestino" >
+        {% for t in cities %}
+        <option value={{t}}>{{t}}</option>
+        {% endfor %}
+        <option value=BCN>Barcelona</option>
+    </select>
+    <button method="get" action="/stop">STOP</button>
+    </form>
+</body>
