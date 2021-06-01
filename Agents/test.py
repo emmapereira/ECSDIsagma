@@ -72,3 +72,26 @@ try:
     printHotels(response.data)
 except ResponseError as error:
     print(error)
+
+
+Información necesaria para vuelos: /shopping/flight-offers
+    - originLocationCode "ABC"
+    - destinationLocationCode "BCN"
+    - departureDate "YYYY-MM-DD"
+    - adults (int)
+    * maxPrice (int)
+    * returnDate
+
+Información necesaria para hoteles: /shopping/hotel-offers
+    - cityCode "BCN"
+    - radius 50
+    - radiusUnit "KM"
+    - checkInDate "YYYY-MM-DD"
+    - checkOutDate "YYYY-MM-DD"
+    - adults (int)
+    * roomQuantity (int)
+    * ratings [1, 2, 3, 4]
+    * bestRateOnly True (devolver sólo la oferta más barata para cada hotel)
+    * priceRange "100-300"
+    *^ currency "EUR"
+

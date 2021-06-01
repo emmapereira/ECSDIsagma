@@ -28,7 +28,7 @@ from rdflib.namespace import FOAF
 from Utilities.ACL import ACL
 from Utilities.FlaskServer import shutdown_server
 from Utilities.Agent import Agent
-from Utilities.ACLMessages import build_message, get_message_properties
+from Utilities.ACLMessages import build_message, get_message_properties, directory_search_message
 from Utilities.Logging import config_logger
 from Utilities.DSO import DSO
 # from Utilities.Util import gethostname
@@ -212,6 +212,12 @@ def register():
     mss_cnt += 1
     return gr.serialize(format='xml')
 
+@app.route('/')
+def root():
+    if request.method == 'GET':
+        return render_template('form_itinerario.html')
+    elif request.method == 'POST':
+        gr = directory_search_message(DSO.Responsable_de_presentación)
 
 @app.route('/info')
 def info():

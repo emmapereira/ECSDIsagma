@@ -5,8 +5,8 @@
 </head>
 <body>
 <form method="get" action="/stop">
-    <h3>Preferencias desplazamiento</h3>
-    <p><label>Ciudad origen</label> </p>
+    <h3>Preferencias de transporte</h3>
+    <p><label>Ciudad de origen</label> </p>
     <select name="ciudadOrigen" >
         {% for t in cities %}
         <option value={{t}}>{{t}}</option>
@@ -15,7 +15,7 @@
         <option value=MDR>Madrid</option>
         <option value=LDN>London</option>
     </select>
-    <p><label>Ciudad Destido</label> </p>
+    <p><label>Ciudad de destido</label> </p>
     <select name="ciudadDestino" >
         {% for t in cities %}
         <option value={{t}}>{{t}}</option>
