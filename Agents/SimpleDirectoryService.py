@@ -28,7 +28,7 @@ from rdflib.namespace import FOAF
 from Utilities.ACL import ACL
 from Utilities.FlaskServer import shutdown_server
 from Utilities.Agent import Agent
-from Utilities.ACLMessages import build_message, get_message_properties, directory_search_message
+from Utilities.ACLMessages import build_message, get_message_properties, send_message
 from Utilities.Logging import config_logger
 from Utilities.DSO import DSO
 # from Utilities.Util import gethostname
@@ -91,6 +91,67 @@ mss_cnt = 0
 
 cola1 = Queue()  # Cola de comunicacion entre procesos
 
+def infoagent_search_message(addr, ragn_uri):
+    """
+    Envia una accion a un agente de informacion
+    """
+    global mss_cnt
+    logger.info('Hacemos una peticion al servicio de informacion')
+
+    gmess = Graph()
+
+    # Supuesta ontologia de acciones de agentes de informacion
+    IAA = Namespace('IAActions')
+
+    gmess.bind('foaf', FOAF)
+    gmess.bind('iaa', IAA)
+    reg_obj = agn[AgentePresentacion.name + '-info-search']
+    gmess.add((reg_obj, RDF.type, IAA.Search))
+
+    msg = build_message(gmess, perf=ACL.request,
+                        sender=AgentePresentacion.uri,
+                        receiver=ragn_uri,
+                        msgcnt=mss_cnt)
+    gr = send_message(msg, addr)
+    mss_cnt += 1
+    logger.info('Recibimos respuesta a la peticion al servicio de informacion')
+
+    return gr
+
+
+def directory_search_message(type):
+    """
+    Busca en el servicio de registro mandando un
+    mensaje de request con una accion Seach del servicio de directorio
+
+    Podria ser mas adecuado mandar un query-ref y una descripcion de registo
+    con variables
+
+    :param type:
+    :return:
+    """
+    global mss_cnt
+    logger.info('Buscamos en el servicio de registro')
+
+    gmess = Graph()
+
+    gmess.bind('foaf', FOAF)
+    gmess.bind('dso', DSO)
+    reg_obj = agn[AgentePresentacion.name + '-search']
+    gmess.add((reg_obj, RDF.type, DSO.Search))
+    gmess.add((reg_obj, DSO.AgentType, type))
+
+    msg = build_message(gmess, perf=ACL.request,
+                        sender=AgentePresentacion.uri,
+                        receiver=DirectoryAgent.uri,
+                        content=reg_obj,
+                        msgcnt=mss_cnt)
+    
+    gr = send_message(msg, DirectoryAgent.address)
+    mss_cnt += 1
+    logger.info('Recibimos informacion del agente')
+
+    return gr
 
 @app.route("/Register")
 def register():
@@ -212,12 +273,18 @@ def register():
     mss_cnt += 1
     return gr.serialize(format='xml')
 
-@app.route('/')
+@app.route('/', methods=['GET','POST'])
 def root():
     if request.method == 'GET':
         return render_template('form_itinerario.html')
     elif request.method == 'POST':
-        gr = directory_search_message(DSO.Responsable_de_presentación)
+
+        gr = directory_search_message(DSO.AgentePresentacion)
+        msg = gr.value(predicate=RDF.type, object=ACL.FipaAclMessage)
+        content = gr.value(subject=msg, predicate=ACL.content)
+        ragn_addr = gr.value(subject=content, predicate=DSO.Address)
+        ragn_uri = gr.value(subject=content, predicate=DSO.Uri)
+        
 
 @app.route('/info')
 def info():
