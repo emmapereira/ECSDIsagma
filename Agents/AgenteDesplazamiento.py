@@ -78,8 +78,8 @@ mss_cnt = 0
 
 # Datos del Agente
 
-AgenteAlojamiento = Agent('AgenteAlojamiento',
-                       agn.AgenteAlojamiento,
+AgenteDesplazamiento = Agent('AgenteDesplazamiento',
+                       agn.AgenteDesplazamiento,
                        'http://%s:%d/comm' % (hostname, port),
                        'http://%s:%d/Stop' % (hostname, port))
 
@@ -102,64 +102,50 @@ def get_count():
     mss_cnt += 1
     return mss_cnt
 
-def procesarBusquedaAlojamiento(grafo, contenido):
-    logger.info("Recibida peticion de busqueda de alojamientos")
-    thread1 = threading.Thread(target=registrarBusquedaAlojamientos,args=(grafo,contenido))
+def procesarBusquedaDesplazamiento(grafo, contenido):
+    logger.info("Recibida peticion de busqueda de transporte")
+    thread1 = threading.Thread(target=registrarBusquedaDesplazamientos,args=(grafo,contenido))
     thread1.start()
 
 
 
 #pensar código, registramos nosotros la busqueda de alojamientos? donde?
-def registrarBusquedaAlojamientos(grafo, contenido):
-    nombre = None
-    numero = None
-    calle = None
-    planta = None
-    esCentrico = False
-    numHabitaciones = None
+def registrarBusquedaDesplazamientos(grafo, contenido):
+    origen = None
+    destino = None
     precio = None
+    transporte = None
     for a,b,c in graph:
-        if b == ECSDIsagma.Nombre:
-            nombre = c
-        elif b == ECSDIsagma.Numero:
-            numero = c
-        elif b == ECSDIsagma.Calle:
-            calle = c
-        elif b == ECSDIsagma.Planta:
-            planta = c
-        elif b == ECSDIsagma.EsCentrico:
-            esCentrico = c
-        elif b == ECSDI.Numero_de_habitaciones:
-            numHabitaciones = c
-        elif b == ECSDI.Precio:
+        if b == ECSDIsagma.Origen:
+            origen = c
+        elif b == ECSDIsagma.Destino:
+            destino = c
+        elif b == ECSDIsagma.Precio:
             precio = c
+        elif b == ECSDIsagma.Transporte:
+            transporte = c
 
-    busquedaAloj = grafo.value(predicate=RDF.type,object=ECSDIsagma.PeticionAlojamientosDisponibles)
-    grafo.add((busquedaAloj))
-    # prioridad = grafo.value(subject=contenido, predicate=ECSDI.Prioridad)
-    # fecha = datetime.now() # + timedelta(days=int(prioridad))
-    # grafo.add((busquedaAloj,ECSDIsagma.FechaEntrega,Literal(fecha, datatype=XSD.date)))
+    busquedaTrans = grafo.value(predicate=RDF.type,object=ECSDIsagma.PeticionTransportesDisponibles)
+    grafo.add((busquedaTrans))
+
     logger.info("Registrando la peticion de busqueda")
     # Añadimos el alojamiento a la base de datos de alojamientos
-    ontologyFile = open('../data/AlojamientosDB')
+    ontologyFile = open('../data/DesplazamientosDB')
 
     graph = Graph()
     graph.bind('default', ECSDIsagma)
     graph.parse(ontologyFile, format='turtle')
     #graph += grafo (no se si hace falta)
 
-    sujeto = ECSDI['Alojamiento' + str(getMessageCount())]
-    graph.add((sujeto, RDF.type, ECSDI.Alojamiento))
-    graph.add((sujeto, ECSDIsagma.Nombre, Literal(nombre, datatype=XSD.string)))
-    graph.add((sujeto, ECSDIsagma.Numero, Literal(numero, datatype=XSD.int)))
-    graph.add((sujeto, ECSDIsagma.Calle, Literal(calle, datatype=XSD.string)))
-    graph.add((sujeto, ECSDIsagma.Planta, Literal(planta, datatype=XSD.int)))
-    graph.add((sujeto, ECSDIsagma.EsCentrico, Literal(esCentrico, datatype=XSD.boolean)))
-    graph.add((sujeto, ECSDIsagma.Numero_de_habitaciones, Literal(numHabitaciones, datatype=XSD.int)))
-    graph.add((sujeto, ECSDIsagma.Precio, Literal(precio, datatype=XSD.int)))
+    sujeto = ECSDI['Transporte' + str(getMessageCount())]
+    graph.add((sujeto, RDF.type, ECSDIsagma.Desplazamiento))
+    graph.add((sujeto, ECSDIsagma.Origen, Literal(origen, datatype=XSD.string)))
+    graph.add((sujeto, ECSDIsagma.Destino, Literal(destino, datatype=XSD.int)))
+    graph.add((sujeto, ECSDIsagma.Precio, Literal(precio, datatype=XSD.string)))
+    graph.add((sujeto, ECSDIsagma.Transporte, Literal(transporte, datatype=XSD.int)))
 
     # Guardamos el grafo
-    graph.serialize(destination='../data/AlojamientosDB', format='turtle')
+    graph.serialize(destination='../data/DesplazamientosDB', format='turtle')
     logger.info("Registro de alojamientos finalizado")
 
 def register_message():
@@ -181,17 +167,17 @@ def register_message():
     # Construimos el mensaje de registro
     gmess.bind('foaf', FOAF)
     gmess.bind('dso', DSO)
-    reg_obj = agn[AgenteAlojamiento.name + '-Register']
+    reg_obj = agn[AgenteDesplazamiento.name + '-Register']
     gmess.add((reg_obj, RDF.type, DSO.Register))
-    gmess.add((reg_obj, DSO.Uri, AgenteAlojamiento.uri))
-    gmess.add((reg_obj, FOAF.name, Literal(AgenteAlojamiento.name)))
-    gmess.add((reg_obj, DSO.Address, Literal(AgenteAlojamiento.address)))
+    gmess.add((reg_obj, DSO.Uri, AgenteDesplazamiento.uri))
+    gmess.add((reg_obj, FOAF.name, Literal(AgenteDesplazamiento.name)))
+    gmess.add((reg_obj, DSO.Address, Literal(AgenteDesplazamiento.address)))
     gmess.add((reg_obj, DSO.AgentType, DSO.HotelsAgent))
 
     # Lo metemos en un envoltorio FIPA-ACL y lo enviamos
     gr = send_message(
         build_message(gmess, perf=ACL.request,
-                      sender=AgenteAlojamiento.uri,
+                      sender=AgenteDesplazamiento.uri,
                       receiver=DirectoryAgent.uri,
                       content=reg_obj,
                       msgcnt=mss_cnt),
@@ -227,14 +213,14 @@ def comunicacion():
     # Comprobamos que sea un mensaje FIPA ACL
     if msgdic is None:
         # Si no es, respondemos que no hemos entendido el mensaje
-        gr = build_message(Graph(), ACL['not-understood'], sender=AgenteAlojamiento.uri, msgcnt=mss_cnt)
+        gr = build_message(Graph(), ACL['not-understood'], sender=AgenteDesplazamiento.uri, msgcnt=mss_cnt)
     else:
         # Obtenemos la performativa
         perf = msgdic['performative']
 
         if perf != ACL.request:
             # Si no es un request, respondemos que no hemos entendido el mensaje
-            gr = build_message(Graph(), ACL['not-understood'], sender=AgenteAlojamiento.uri, msgcnt=mss_cnt)
+            gr = build_message(Graph(), ACL['not-understood'], sender=AgenteDesplazamiento.uri, msgcnt=mss_cnt)
         else:
             # Extraemos el objeto del contenido que ha de ser una accion de la ontologia de acciones del agente
             # de registro
@@ -246,8 +232,8 @@ def comunicacion():
 
             # Aqui realizariamos lo que pide la accion
             # Si la acción es de tipo peticionAlojamientosDisponibles emprendemos las acciones consequentes
-            if accion == ECSDIsagma.definir_servicio_alojamiento:
-                logger.info("Procesando peticion de búsqueda de alojamiento")
+            if accion == ECSDIsagma.definir_servicio_desplazamiento:
+                logger.info("Procesando peticion de búsqueda de desplazamiento")
                 # Eliminar los ACLMessage
                 for item in gm.subjects(RDF.type, ACL.FipaAclMessage):
                     gm.remove((item, None, None))
@@ -255,34 +241,34 @@ def comunicacion():
                 #deberemos comunicarnos con agentes externos para conseguir lista de alojamientos
                 procesarBusquedaAlojamiento(gm, content)
 
-            else if accion == ECSDIsagma.OfertaAlojamientos
-                logger.info("Procesando lista de ofertas de alojamientos")
+            else if accion == ECSDIsagma.OfertaDesplazamientos
+                logger.info("Procesando lista de ofertas de transportes")
 
                 gm.remove((content, None, None))
                 for item in gm.subjects(RDF.type, ACL.FipaAclMessage):
                     gm.remove((item, None, None))
 
                 save = None
-                for item in gm.subjects(RDF.type, ECSDI.OfertaAlojamientos):
+                for item in gm.subjects(RDF.type, ECSDI.OfertaDesplazamientos):
                     save = item
 
                 #guardar alojamientos en bd alojamientos ?
-                ontologyFile = open('../data/alojamientos')
+                ontologyFile = open('../data/desplazamientos')
 
                 g = Graph()
                 g.parse(ontologyFile, format='turtle')
                 g += gm
 
-                g.serialize(destination='../data/alojamientos', format='turtle')
+                g.serialize(destination='../data/desplazamientos', format='turtle')
 
             else if accion == ECSDIsagma.PeticionMetodoPago
-                logger.info("Procesando peticion del metodo de pago del alojamiento")
+                logger.info("Procesando peticion del metodo de pago del desplazamiento")
 
                 #comunicarnos con agente externo para conseguir la info de pago del alojamiento
                 #confirmar el alojamiento
 
             else if accion == ECSDIsagma.MetodoPago
-                logger.info("Procesando metodo de pago del alojamiento")
+                logger.info("Procesando metodo de pago del desplazamiento")
 
                 #devolver el metodo de pago al agente de presentacion?
 
@@ -322,7 +308,7 @@ def tidyup():
     cola1.put(0)
 
 
-def AgenteAlojamientoBehavior(cola):
+def AgenteDesplazamientoBehavior(cola):
     """
     Un comportamiento del agente
 
@@ -345,7 +331,7 @@ def AgenteAlojamientoBehavior(cola):
 
 if __name__ == '__main__':
     # Ponemos en marcha los behaviors
-    ab1 = Process(target=AgenteAlojamientoBehavior, args=(cola1,))
+    ab1 = Process(target=AgenteDesplazamientoBehavior, args=(cola1,))
     ab1.start()
 
     # Ponemos en marcha el servidor
