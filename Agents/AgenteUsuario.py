@@ -185,34 +185,6 @@ def browser_iface():
         mess = request.form['message']
         return render_template('riface.html', user=user, mess=mess)
 
-@app.route('/', methods=['GET','POST'])
-
-
-def root():
-    if request.method == 'GET':
-        return render_template('form_itinerario.html')
-    elif request.method == 'POST':
-
-
-        #gr = directory_search_message(DSO.AgentePresentacion)
-        #msg = gr.value(predicate=RDF.type, object=ACL.FipaAclMessage)
-        #content = gr.value(subject=msg, predicate=ACL.content)
-        ##ragn_addr = gr.value(subject=content, predicate=DSO.Address)
-        #ragn_uri = gr.value(subject=content, predicate=DSO.Uri)
-
-        informacionTrans = {
-            "datein": request.form["checkindate"]
-        }
-
-        logger(informacionTrans)
-        return render_template('form_itinerario.html')
-
-        #graf buit amb missatge que s'envia a l'AgentPresentacion
-        #build_message (.........)
-        #send message amb (msg, ragn_addr)
-       # gmess = Graph()
-        #gmess.bind('ECSDIsagma', ECSDIsagma)
-
 
 @app.route("/stop")
 def stop():

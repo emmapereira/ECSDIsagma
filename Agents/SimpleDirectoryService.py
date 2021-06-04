@@ -281,6 +281,16 @@ def infoSearch():
     return render_template('form_itinerario.html')
 
 
+@app.route("/buscar")
+def busqueda():
+    """
+    html
+    """
+    checkin = request.args['checkindate']
+    logger.info(checkin)
+    return render_template('form_itinerario.html')
+
+
 @app.route("/stop")
 def stop():
     """
