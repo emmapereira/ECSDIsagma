@@ -12,7 +12,7 @@ Created on 09/02/2014
 @author: javier
 """
 
-from multiprocessing import Process
+from multiprocessing import Process, Queue
 import logging
 import argparse
 
@@ -55,7 +55,7 @@ else:
 
 if args.open:
     hostname = '0.0.0.0'
-    hostaddr = gethostname()
+    hostaddr = socket.gethostname()
 else:
     hostaddr = hostname = socket.gethostname()
 
@@ -67,7 +67,7 @@ else:
     dport = args.dport
 
 if args.dhost is None:
-    dhostname = gethostname()
+    dhostname = socket.gethostname()
 else:
     dhostname = args.dhost
 
@@ -104,6 +104,9 @@ DirectoryAgent = Agent('DirectoryAgent',
 
 # Global dsgraph triplestore
 dsgraph = Graph()
+
+global cola1
+cola1 = Queue()
 
 
 
@@ -198,10 +201,15 @@ def root():
         #ragn_uri = gr.value(subject=content, predicate=DSO.Uri)
 
         informacionTrans = {
-            "data": request.form["checkindate"]
+            "datein": request.form["checkindate"]
         }
-        logger("informacionTrans")
+
+        logger(informacionTrans)
         return render_template('form_itinerario.html')
+
+        #graf buit amb missatge que s'envia a l'AgentPresentacion
+        #build_message (.........)
+        #send message amb (msg, ragn_addr)
        # gmess = Graph()
         #gmess.bind('ECSDIsagma', ECSDIsagma)
 
@@ -231,10 +239,11 @@ def tidyup():
     Acciones previas a parar el agente
 
     """
+    cola1.put(0)
     pass
 
 
-def AgenteUsuarioBehavior():
+def AgenteUsuarioBehavior(cola):
     """
     Un comportamiento del agente
 
@@ -249,7 +258,7 @@ def AgenteUsuarioBehavior():
 
 if __name__ == '__main__':
     # Ponemos en marcha los behaviors
-    ab1 = Process(target=AgenteUsuarioBehavior)
+    ab1 = Process(target=AgenteUsuarioBehavior, args=(cola1,))
     ab1.start()
 
     # Ponemos en marcha el servidor

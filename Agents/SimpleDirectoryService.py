@@ -146,7 +146,7 @@ def directory_search_message(type):
                         receiver=DirectoryAgent.uri,
                         content=reg_obj,
                         msgcnt=mss_cnt)
-    
+
     gr = send_message(msg, DirectoryAgent.address)
     mss_cnt += 1
     logger.info('Recibimos informacion del agente')
@@ -273,6 +273,12 @@ def register():
     mss_cnt += 1
     return gr.serialize(format='xml')
 
+@app.route("/")
+def infoSearch():
+    """
+    html
+    """
+    return render_template('form_itinerario.html')
 
 
 @app.route("/stop")
@@ -311,7 +317,7 @@ def agentbehavior1(cola):
         else:
             print(v)
 
-    
+
 
 if __name__ == '__main__':
     # Ponemos en marcha los behaviours como procesos
