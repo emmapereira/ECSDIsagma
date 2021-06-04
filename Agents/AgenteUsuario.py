@@ -83,7 +83,7 @@ agn = Namespace("http://www.agentes.org#")
 # Contador de mensajes
 mss_cnt = 0
 
-#Funcion de contar mensajes 
+#Funcion de contar mensajes
 def get_count():
     global mss_cnt
     mss_cnt += 1
@@ -104,7 +104,6 @@ DirectoryAgent = Agent('DirectoryAgent',
 
 # Global dsgraph triplestore
 dsgraph = Graph()
-
 
 
 
@@ -190,8 +189,8 @@ def root():
     if request.method == 'GET':
         return render_template('form_itinerario.html')
     elif request.method == 'POST':
-        
-       
+
+
         #gr = directory_search_message(DSO.AgentePresentacion)
         #msg = gr.value(predicate=RDF.type, object=ACL.FipaAclMessage)
         #content = gr.value(subject=msg, predicate=ACL.content)
@@ -205,7 +204,7 @@ def root():
         return render_template('form_itinerario.html')
        # gmess = Graph()
         #gmess.bind('ECSDIsagma', ECSDIsagma)
-        
+
 
 @app.route("/stop")
 def stop():
@@ -246,7 +245,7 @@ def AgenteUsuarioBehavior():
     gr = register_agent(AgenteUsuario, DirectoryAgent, DSO.AgenteUsuario, get_count())
 
     logger.info("Registro hecho")
-    
+
 
 if __name__ == '__main__':
     # Ponemos en marcha los behaviors

@@ -23,6 +23,7 @@ DSO =  ClosedNamespace(
         'Search',
         'SolverAgent',
         'Modify',
+        'AgenteUsuario',
 
         # Object properties
         'AgentType',
@@ -31,7 +32,7 @@ DSO =  ClosedNamespace(
         'Uri',
         'Name',
         'Address',
-        
+
         # Named Individuals
         'FlightsAgent',
         'HotelsAgent',

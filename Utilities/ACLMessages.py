@@ -10,11 +10,12 @@ Created on 08/02/2014
 """
 __author__ = 'javier'
 
-from rdflib import Graph, URIRef
+from rdflib import Graph, URIRef, Namespace, Literal
 import requests
-from rdflib.namespace import RDF, OWL
+from rdflib.namespace import RDF, OWL, FOAF
 from Utilities.OntoNamespaces import ACL, DSO
 
+agn = Namespace("http://www.agentes.org#")
 
 def build_message(gmess, perf, sender=None, receiver=None,  content=None, msgcnt=0):
     """
@@ -86,6 +87,7 @@ def get_message_properties(msg):
                 msgdic[key] = val
     return msgdic
 
+
 def register_agent(origin_agent, directory_agent, type_, msg_cnt):
     gmess = Graph()
     # Construimos el mensaje de registro
@@ -94,10 +96,9 @@ def register_agent(origin_agent, directory_agent, type_, msg_cnt):
     reg_obj = agn[origin_agent.name + '-Register']
     gmess.add((reg_obj, RDF.type, DSO.Register))
     gmess.add((reg_obj, DSO.Uri, origin_agent.uri))
-    gmess.add((reg_obj, FOAF.name, Literal(origin_agent.name)))
+    gmess.add((reg_obj, DSO.Name, Literal(origin_agent.name)))
     gmess.add((reg_obj, DSO.Address, Literal(origin_agent.address)))
     gmess.add((reg_obj, DSO.AgentType, type_))
-    
     # Lo metemos en un envoltorio FIPA-ACL y lo enviamos
     gr = send_message(
         build_message(gmess, perf=ACL.request,
@@ -106,9 +107,8 @@ def register_agent(origin_agent, directory_agent, type_, msg_cnt):
                       content=reg_obj,
                       msgcnt=msg_cnt),
         directory_agent.address)
-    return gr
 
-    
+
 def get_agent_info(type_, directory_agent, sender, msgcnt):
     gmess = Graph()
     # Construimos el mensaje de registro
