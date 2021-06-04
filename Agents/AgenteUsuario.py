@@ -1,241 +1,183 @@
-# -*- coding: utf-8 -*-
 """
-filename: SimplePersonalAgent
+.. module:: Client
 
-Antes de ejecutar hay que añadir la raiz del proyecto a la variable PYTHONPATH
+Client
+*************
 
-Ejemplo de agente que busca en el directorio y llama al agente obtenido
+:Description: Client
 
+    Cliente del resolvedor distribuido
 
-Created on 09/02/2014
+:Authors: bejar
+    
 
-@author: javier
+:Version: 
+
+:Created on: 06/02/2018 8:21 
+
 """
 
-from multiprocessing import Process, Queue
-import logging
+from Util import gethostname
 import argparse
-
-from flask import Flask, render_template, request
-from rdflib import Graph, Namespace
-from rdflib.namespace import FOAF, RDF
-
-from Utilities.ACL import ACL
-from Utilities.DSO import DSO
 from Utilities.FlaskServer import shutdown_server
-from Utilities.ACLMessages import build_message, send_message, register_agent
-from Utilities.Agent import Agent
-from Utilities.Logging import config_logger
-#from Utilities.Util import gethostname
+import requests
+from flask import Flask, request, render_template, url_for, redirect
+import logging
 import socket
 
-__author__ = 'sagma'
+__author__ = 'bejar'
 
-# Definimos los parametros de la linea de comandos
-parser = argparse.ArgumentParser()
-parser.add_argument('--open', help="Define si el servidor est abierto al exterior o no", action='store_true',
-                    default=False)
-parser.add_argument('--verbose', help="Genera un log de la comunicacion del servidor web", action='store_true',
-                        default=False)
-parser.add_argument('--port', type=int, help="Puerto de comunicacion del agente")
-parser.add_argument('--dhost', help="Host del agente de directorio")
-parser.add_argument('--dport', type=int, help="Puerto de comunicacion del agente de directorio")
-
-# Logging
-logger = config_logger(level=1)
-
-# parsing de los parametros de la linea de comandos
-args = parser.parse_args()
-
-# Configuration stuff
-if args.port is None:
-    port = 9002
-else:
-    port = args.port
-
-if args.open:
-    hostname = '0.0.0.0'
-    hostaddr = socket.gethostname()
-else:
-    hostaddr = hostname = socket.gethostname()
-
-print('DS Hostname =', hostaddr)
-
-if args.dport is None:
-    dport = 9000
-else:
-    dport = args.dport
-
-if args.dhost is None:
-    dhostname = socket.gethostname()
-else:
-    dhostname = args.dhost
-
-# Flask stuff
 app = Flask(__name__)
-if not args.verbose:
-    log = logging.getLogger('werkzeug')
-    log.setLevel(logging.ERROR)
 
-# Configuration constants and variables
-agn = Namespace("http://www.agentes.org#")
-
-# Contador de mensajes
-mss_cnt = 0
-
-#Funcion de contar mensajes
-def get_count():
-    global mss_cnt
-    mss_cnt += 1
-    return mss_cnt
+problems = {}
+probcounter = 0
+clientid = ''
+diraddress = ''
 
 
-# Datos del Agente
-AgenteUsuario = Agent('AgenteUsuario',
-                       agn.AgentePersonal,
-                       'http://%s:%d/comm' % (hostaddr, port),
-                       'http://%s:%d/Stop' % (hostaddr, port))
-
-# Directory agent address
-DirectoryAgent = Agent('DirectoryAgent',
-                       agn.Directory,
-                       'http://%s:%d/Register' % (dhostname, dport),
-                       'http://%s:%d/Stop' % (dhostname, dport))
-
-# Global dsgraph triplestore
-dsgraph = Graph()
-
-global cola1
-cola1 = Queue()
-
-
-
-def directory_search_message(type):
+@app.route("/message", methods=['GET', 'POST'])
+def message():
     """
-    Busca en el servicio de registro mandando un
-    mensaje de request con una accion Seach del servicio de directorio
+    Entrypoint para todas las comunicaciones
 
-    Podria ser mas adecuado mandar un query-ref y una descripcion de registo
-    con variables
-
-    :param type:
     :return:
     """
-    global mss_cnt
-    logger.info('Buscamos en el servicio de registro')
+    global problems
 
-    gmess = Graph()
-
-    gmess.bind('foaf', FOAF)
-    gmess.bind('dso', DSO)
-    reg_obj = agn[AgenteUsuario.name + '-search']
-    gmess.add((reg_obj, RDF.type, DSO.Search))
-    gmess.add((reg_obj, DSO.AgentType, type))
-
-    msg = build_message(gmess, perf=ACL.request,
-                        sender=AgenteUsuario.uri,
-                        receiver=DirectoryAgent.uri,
-                        content=reg_obj,
-                        msgcnt=mss_cnt)
-    gr = send_message(msg, DirectoryAgent.address)
-    mss_cnt += 1
-    logger.info('Recibimos informacion del agente')
-
-    return gr
-
-
-def infoagent_search_message(addr, ragn_uri):
-    """
-    Envia una accion a un agente de informacion
-    """
-    global mss_cnt
-    logger.info('Hacemos una peticion al servicio de informacion')
-
-    gmess = Graph()
-
-    # Supuesta ontologia de acciones de agentes de informacion
-    IAA = Namespace('IAActions')
-
-    gmess.bind('foaf', FOAF)
-    gmess.bind('iaa', IAA)
-    reg_obj = agn[AgenteUsuario.name + '-info-search']
-    gmess.add((reg_obj, RDF.type, IAA.Search))
-
-    msg = build_message(gmess, perf=ACL.request,
-                        sender=AgenteUsuario.uri,
-                        receiver=ragn_uri,
-                        msgcnt=mss_cnt)
-    gr = send_message(msg, addr)
-    mss_cnt += 1
-    logger.info('Recibimos respuesta a la peticion al servicio de informacion')
-
-    return gr
-
-
-@app.route("/iface", methods=['GET', 'POST'])
-def browser_iface():
-    """
-    Permite la comunicacion con el agente via un navegador
-    via un formulario
-    """
-    if request.method == 'GET':
-        return render_template('iface.html')
+    # if request.form.has_key('message'):
+    if 'message' in request.form:
+        # send_message(request.form['problem'], request.form['message'])
+        return redirect('/')
     else:
-        user = request.form['username']
-        mess = request.form['message']
-        return render_template('riface.html', user=user, mess=mess)
+        # Respuesta del solver SOLVED|PROBID,SOLUTION
+        mess = request.args['message'].split('|')
+        if len(mess) == 2:
+            messtype, messparam = mess
+            if messtype == 'SOLVED':
+                solution = messparam.split(',')
+                if len(solution) == 2:
+                    probid, sol = solution
+                    if probid in problems:
+                        problems[probid][2] = sol
+                    else:  # Para el script de test de stress
+                        problems[probid] = ['DUMMY', 'DUMMY', sol]
+        return 'OK'
+
+
+@app.route('/info')
+def info():
+    """
+    Entrada que da informacion sobre el agente a traves de una pagina web
+    """
+    global problems
+
+    return render_template('clientproblems.html', probs=problems)
+
+
+@app.route('/')
+def renderform():
+    """
+    Interfaz con el cliente a traves de una pagina de web
+    """
+    # probtypes = ['ARITH', 'MFREQ']
+    return render_template('form_itinerario.html')
 
 
 @app.route("/stop")
 def stop():
     """
-    Entrypoint que para el agente
-
-    :return:
+    Entrada que para el agente
     """
-    tidyup()
     shutdown_server()
     return "Parando Servidor"
 
 
-@app.route("/comm")
-def comunicacion():
-    """
-    Entrypoint de comunicacion del agente
-    """
-    return "Hola"
+# def send_message(probtype, problem):
+#     """
+#     Envia un request a un solver
+
+#     mensaje:
+
+#     SOLVE|TYPE,PROBLEM,PROBID,CLIENTID
+
+#     :param probid:
+#     :param probtype:
+#     :param proble:
+#     :return:
+#     """
+#     global probcounter
+#     global clientid
+#     global diraddress
+#     global port
+#     global problems
+
+#     probid = f'{clientid}-{probcounter:03}'
+#     probcounter += 1
+
+#     # Busca un sotver en el servicio de directorio
+#     solveradd = requests.get(diraddress + '/message', params={'message': f'SEARCH|SOLVER'}).text
+#     # Solver encontrado
+#     if 'OK' in solveradd:
+#         # Le quitamos el OK de la respuesta
+#         solveradd = solveradd[4:]
+
+#         problems[probid] = [probtype, problem, 'PENDING']
+#         mess = f'SOLVE|{probtype},{clientadd},{probid},{sanitize(problem)}'
+#         resp = requests.get(solveradd + '/message', params={'message': mess}).text
+#         if 'ERROR' not in resp:
+#             problems[probid] = [probtype, problem, 'PENDING']
+#         else:
+#             problems[probid] = [probtype, problem, 'FAILED SOLVER']
+#     # Solver no encontrado
+#     else:
+#         problems[probid] = (probtype, problem, 'FAILED DS')
 
 
-def tidyup():
-    """
-    Acciones previas a parar el agente
-
-    """
-    cola1.put(0)
-    pass
-
-
-def AgenteUsuarioBehavior(cola):
-    """
-    Un comportamiento del agente
-
-    :return:
-    """
-    logger.info("En proceso de registro")
-
-    gr = register_agent(AgenteUsuario, DirectoryAgent, DSO.AgenteUsuario, get_count())
-
-    logger.info("Registro hecho")
+# def sanitize(prob):
+#     """
+#     remove problematic punctuation signs from the string of the problem
+#     :param prob:
+#     :return:
+#     """
+#     return prob.replace(',', '*')
 
 
 if __name__ == '__main__':
-    # Ponemos en marcha los behaviors
-    ab1 = Process(target=AgenteUsuarioBehavior, args=(cola1,))
-    ab1.start()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--open', help="Define si el servidor esta abierto al exterior o no", action='store_true',
+                        default=False)
+    parser.add_argument('--verbose', help="Genera un log de la comunicacion del servidor web", action='store_true',
+                        default=False)
+    parser.add_argument('--port', default=None, type=int, help="Puerto de comunicacion del agente")
+    parser.add_argument('--dir', default=None, help="Direccion del servicio de directorio")
 
-    # Ponemos en marcha el servidor
-    app.run(host=hostname, port=port)
+    # parsing de los parametros de la linea de comandos
+    args = parser.parse_args()
+    if not args.verbose:
+        log = logging.getLogger('werkzeug')
+        log.setLevel(logging.ERROR)
 
-    # Esperamos a que acaben los behaviors
-    ab1.join()
-    logger.info('The End')
+    # Configuration stuff
+    if args.port is None:
+        port = 9001
+    else:
+        port = args.port
+
+    if args.open:
+        hostname = '0.0.0.0'
+        hostaddr = gethostname()
+    else:
+        hostaddr = hostname = socket.gethostname()
+
+    print('DS Hostname =', hostaddr)
+
+    clientadd = f'http://{hostaddr}:{port}'
+    clientid = hostaddr.split('.')[0] + '-' + str(port)
+
+    if args.dir is None:
+        raise NameError('A Directory Service addess is needed')
+    else:
+        diraddress = args.dir
+
+    # Ponemos en marcha el servidor Flask
+    app.run(host=hostname, port=port, debug=False, use_reloader=False)
