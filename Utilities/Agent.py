@@ -9,7 +9,7 @@ Agent
 
 """
 
-__author__ = 'bejar'
+__author__ = 'sagma'
 
 
 class Agent():

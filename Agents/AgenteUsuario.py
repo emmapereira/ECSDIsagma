@@ -20,16 +20,16 @@ from flask import Flask, render_template, request
 from rdflib import Graph, Namespace
 from rdflib.namespace import FOAF, RDF
 
-from AgentUtil.ACL import ACL
-from AgentUtil.DSO import DSO
-from AgentUtil.FlaskServer import shutdown_server
-from AgentUtil.ACLMessages import build_message, send_message
-from AgentUtil.Agent import Agent
-from AgentUtil.Logging import config_logger
-from AgentUtil.Util import gethostname
+from Utilities.ACL import ACL
+from Utilities.DSO import DSO
+from Utilities.FlaskServer import shutdown_server
+from Utilities.ACLMessages import build_message, send_message, register_agent
+from Utilities.Agent import Agent
+from Utilities.Logging import config_logger
+#from Utilities.Util import gethostname
 import socket
 
-__author__ = 'javier'
+__author__ = 'sagma'
 
 # Definimos los parametros de la linea de comandos
 parser = argparse.ArgumentParser()
@@ -83,6 +83,13 @@ agn = Namespace("http://www.agentes.org#")
 # Contador de mensajes
 mss_cnt = 0
 
+#Funcion de contar mensajes 
+def get_count():
+    global mss_cnt
+    mss_cnt += 1
+    return mss_cnt
+
+
 # Datos del Agente
 AgenteUsuario = Agent('AgenteUsuario',
                        agn.AgentePersonal,
@@ -97,6 +104,8 @@ DirectoryAgent = Agent('DirectoryAgent',
 
 # Global dsgraph triplestore
 dsgraph = Graph()
+
+
 
 
 def directory_search_message(type):
@@ -174,6 +183,29 @@ def browser_iface():
         mess = request.form['message']
         return render_template('riface.html', user=user, mess=mess)
 
+@app.route('/', methods=['GET','POST'])
+
+
+def root():
+    if request.method == 'GET':
+        return render_template('form_itinerario.html')
+    elif request.method == 'POST':
+        
+       
+        #gr = directory_search_message(DSO.AgentePresentacion)
+        #msg = gr.value(predicate=RDF.type, object=ACL.FipaAclMessage)
+        #content = gr.value(subject=msg, predicate=ACL.content)
+        ##ragn_addr = gr.value(subject=content, predicate=DSO.Address)
+        #ragn_uri = gr.value(subject=content, predicate=DSO.Uri)
+
+        informacionTrans = {
+            "data": request.form["checkindate"]
+        }
+        logger("informacionTrans")
+        return render_template('form_itinerario.html')
+       # gmess = Graph()
+        #gmess.bind('ECSDIsagma', ECSDIsagma)
+        
 
 @app.route("/stop")
 def stop():
@@ -209,21 +241,12 @@ def AgenteUsuarioBehavior():
 
     :return:
     """
+    logger.info("En proceso de registro")
 
-    # Buscamos en el directorio
-    # un agente de hoteles
-    gr = directory_search_message(DSO.HotelsAgent)
+    gr = register_agent(AgenteUsuario, DirectoryAgent, DSO.AgenteUsuario, get_count())
 
-    # Obtenemos la direccion del agente de la respuesta
-    # No hacemos ninguna comprobacion sobre si es un mensaje valido
-    msg = gr.value(predicate=RDF.type, object=ACL.FipaAclMessage)
-    content = gr.value(subject=msg, predicate=ACL.content)
-    ragn_addr = gr.value(subject=content, predicate=DSO.Address)
-    ragn_uri = gr.value(subject=content, predicate=DSO.Uri)
-
-    # Ahora mandamos un objeto de tipo request mandando una accion de tipo Search
-    # que esta en una supuesta ontologia de acciones de agentes
-    infoagent_search_message(ragn_addr, ragn_uri)
+    logger.info("Registro hecho")
+    
 
 if __name__ == '__main__':
     # Ponemos en marcha los behaviors

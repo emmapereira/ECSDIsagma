@@ -273,28 +273,6 @@ def register():
     mss_cnt += 1
     return gr.serialize(format='xml')
 
-@app.route('/', methods=['GET','POST'])
-def root():
-    if request.method == 'GET':
-        return render_template('form_itinerario.html')
-    elif request.method == 'POST':
-
-        gr = directory_search_message(DSO.AgentePresentacion)
-        msg = gr.value(predicate=RDF.type, object=ACL.FipaAclMessage)
-        content = gr.value(subject=msg, predicate=ACL.content)
-        ragn_addr = gr.value(subject=content, predicate=DSO.Address)
-        ragn_uri = gr.value(subject=content, predicate=DSO.Uri)
-        
-
-@app.route('/info')
-def info():
-    """
-    Entrada que da informacion sobre el agente a traves de una pagina web
-    """
-    global dsgraph
-    global mss_cnt
-
-    return render_template('info.html', nmess=mss_cnt, graph=dsgraph.serialize(format='turtle'))
 
 
 @app.route("/stop")
@@ -332,6 +310,8 @@ def agentbehavior1(cola):
             return 0
         else:
             print(v)
+
+    
 
 if __name__ == '__main__':
     # Ponemos en marcha los behaviours como procesos

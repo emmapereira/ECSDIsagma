@@ -32,7 +32,7 @@ Logging
 
 import logging
 
-__author__ = 'bejar'
+__author__ = 'sagma'
 
 def config_logger(level=0, file=None):
     """

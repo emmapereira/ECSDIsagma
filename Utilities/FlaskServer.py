@@ -12,7 +12,7 @@ Diferentes funciones comunes a los agentes implementados en ECSDI
 
 from flask import request
 
-__author__ = 'bejar'
+__author__ = 'sagma'
 
 
 
