@@ -42,13 +42,13 @@ amadeus = Client(
 
 def encontrarTrans(checkindate, checkoutdate, adults, code, maxflightprice):
     try:
-        response = amadeus.shopping.flight_offers.get(
+        response = amadeus.shopping.flight_offers_search.get(
             destinationLocationCode = 'BCN',
             originLocationCode = code,
             departureDate = checkindate,
             returnDate = checkoutdate,
             adults = adults,
-            maxPrice = maxflightprice,
+            maxPrice = int(maxflightprice),
             currencyCode = 'EUR'
             )
         
@@ -74,6 +74,7 @@ def encontrarTrans(checkindate, checkoutdate, adults, code, maxflightprice):
         return ofertas
     except ResponseError as error:
         log.error("amadeus fucked up")
+        log.error(error)
         return error
 
 @app.route("/message", methods=['GET', 'POST'])
