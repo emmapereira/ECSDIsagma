@@ -35,6 +35,13 @@ totalbusquedas = 0
 clientid = ''
 diraddress = ''
 
+def guardarPreferencias(checkindate,checkoutdate,adults,code,maxflightprice,roomQuantity,radius,minPrice,maxPrice):
+    
+    DBpreferencias=open("preferencias.txt","a+")
+    DBpreferencias.write("checkindate: %s" % checkindate) 
+    DBpreferencias.write("checkoutdate: %s \n" % checkoutdate)
+    #escriure-les totes si van
+    DBpreferencias.close()
 
 @app.route("/message", methods=['GET', 'POST'])
 def message():
@@ -66,6 +73,8 @@ def message():
         if 'radius' in request.args: radius = request.args['radius']
         if 'minPrice' in request.args: minPrice = request.args['minPrice']
         if 'maxPrice' in request.args: maxPrice = request.args['maxPrice']
+
+        guardarPreferencias(checkindate,checkoutdate,adults,code,maxflightprice,roomQuantity,radius,minPrice,maxPrice)
 
         return inicia_busqueda(
             checkindate ,
