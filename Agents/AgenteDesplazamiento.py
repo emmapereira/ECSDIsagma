@@ -64,7 +64,7 @@ def encontrarTrans(checkindate, checkoutdate, adults, code, maxflightprice):
 
             for itinerario in element['itineraries']:
                 oferta['salida'] = itinerario['segments'][0]['departure']['at']
-                oferta['llegada'] = itinerario['arrival']['at']
+                oferta['llegada'] = itinerario['arrival']
                 oferta['companyia'] = itinerario['carrierCode']
                 oferta['number'] = itinerario['number']
 
