@@ -24,6 +24,8 @@ import requests
 from flask import Flask, request, render_template, url_for, redirect
 import logging
 import socket
+import json
+import ast
 
 __author__ = 'bejar'
 
@@ -63,9 +65,13 @@ def message():
             if messtype == 'BUSQ':
                 param = messparam.split(',')
                 if len(param) == 10:
+                    alojamientos = None
+                    transportes = None
+
                     busquedaid, checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice = param
                     busquedas[busquedaid] = ['PENDING', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
-                    
+
+                    ######### BUSQUEDA DE ALOJAMIENTOS #############################################
                     alojadd = requests.get(diraddress + '/message', params = {'message': f'SEARCH|ALOJ'}).text
                     if 'OK' in alojadd:
                         # Le quitamos el OK de la respuesta
@@ -76,15 +82,30 @@ def message():
                         mess = f'BUSQALOJ|{busquedaid},{checkindate},{checkoutdate},{adults},{roomQuantity},{radius},{minPrice},{maxPrice}'
                         resp = requests.get(alojadd + '/message', params={'message': mess}).text
                         if 'ERROR' not in resp:
+
+                            alojamientos = (ast.literal_eval(resp))
+                            
                             busquedas[busquedaid][0] = 'PENDING' #['PENDING', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
                         else:
-                            busquedas[busquedaid][0] = 'FAILED ALOJ'
+                            busquedas[busquedaid][0] = 'ERROR: ERROR BUSCANDO ALOJAMIENTOS'
+                            return 'ERROR: ERROR BUSCANDO ALOJAMIENTOS'
                     else:
-                        busquedas[busquedaid][0] = 'FAILED SERVER'
+                        busquedas[busquedaid][0] = 'ERROR: NO ALOJ AVAILABLE'
                         return 'ERROR: NO ALOJ AVAILABLE'
+                    ################################################################################
                     
+                    ######### BUSQUEDA DE TRANSPORTES #############################################
                     # despues copiar lo mismo pero con TRANS
+                    ################################################################################
+
+                    resultado = {}
+                    resultado['alojamientos'] = alojamientos
+                    # resultado['transportes'] = transportes
+
+                    busquedas[busquedaid][0] = 'DONE'
+                    return resultado
                 else:
+                    usquedas[busquedaid][0] = 'ERROR: WRONG PARAMETERS'
                     return 'ERROR: WRONG PARAMETERS'
             # respuesta del solver con una solucion
             elif messtype == 'SOLVED':

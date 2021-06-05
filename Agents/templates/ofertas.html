@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Ofertas Disponibles</title>
+<meta http-equiv="refresh" content="20">
+    <style type="text/css">
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Ofertas de alojamientos</h1>
+<p></p>
+Total de alojamientos encontrados = {{alojamientos|length}}
+<p></p>
+<table>
+    <tr>
+        <th>Nombre del hotel</th>
+        <th>Id del hotel</th>
+        <th>Valoración del hotel</th>
+        <th>Dirección</th>
+        <th>Descripción de la habitación</th>
+        <th>Adultos</th>
+        <th>Precio</th>
+    </tr>
+    {% for singleAlojamiento in alojamientos|sort %}
+    <tr>
+        <td>{{singleAlojamiento[0]}}</td>
+        <td>{{singleAlojamiento[1]}}</td>
+        <td>{{singleAlojamiento[2]}}</td>
+        <td>{{singleAlojamiento[3]}}</td>
+        <td>{{singleAlojamiento[4]}}</td>
+        <td>{{singleAlojamiento[5]}}</td>
+        <td>{{singleAlojamiento[6]}}</td>
+     </tr>
+    {% endfor %}
+</table>
+
+<form  action="/info" method="get">
+    <p>
+        <button type="submit">Refresh</button>
+    </p>
+</form>
+
+</body>
+</html>

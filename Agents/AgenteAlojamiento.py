@@ -56,7 +56,31 @@ def encontrarAloj(checkindate, checkoutdate, adults, roomQuantity, radius, minPr
         
         log.info('Hey el amadeus ha respodido eh')
 
-        return response.data[0]
+        ofertas = []
+        for element in response.data:
+            # NOMBRE, DIRECCIÓN, HABITACIONES, CAMAS, PRECIO, 
+            oferta = {}
+            infoHotel = element['hotel']
+            oferta['name'] = infoHotel['name']
+            oferta['hotelId'] = infoHotel['hotelId']
+            oferta['rating'] = infoHotel['rating']
+
+            address = ''
+            for lines in infoHotel['address']['lines']:
+                address = lines + '\n'
+            address = address + infoHotel['address']['postalCode']   
+            oferta['address'] = address
+
+            for infoOferta in element['offers']:
+
+                oferta['description'] = infoOferta['room']['description']['text']
+                oferta['adults'] = infoOferta['guests']['adults']
+                oferta['price'] = infoOferta['price']['total']
+
+                ofertas.append(oferta)
+
+
+        return ofertas
     except ResponseError as error:
         log.error("amadeus fucked up")
         return error
@@ -96,7 +120,8 @@ def message():
                     busquedas[busquedaid] = ['PENDING', checkindate, checkoutdate, adults, roomQuantity, radius, minPrice, maxPrice]
                     
                     alojs = encontrarAloj(checkindate, checkoutdate, adults, roomQuantity, radius, minPrice, maxPrice)
-                    log.info(alojs)
+                    
+                    return str(alojs)
                 else:
                     log.error('WRONG PARAMETERS')
                     return 'ERROR: WRONG PARAMETERS'

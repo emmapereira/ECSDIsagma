@@ -24,6 +24,7 @@ import requests
 from flask import Flask, request, render_template, url_for, redirect
 import logging
 import socket
+import ast
 
 __author__ = 'bejar'
 
@@ -46,7 +47,7 @@ def message():
     
 
     # if request.form.has_key('message'):
-    if 'message' in request.form:
+    if 'message' in request.args:
         checkindate = None
         checkoutdate = None
         adults = None
@@ -56,17 +57,17 @@ def message():
         radius = None
         minPrice = None
         maxPrice = None
-        if 'checkindate' in request.form: checkindate = request.form['checkindate']
-        if 'checkoutdate' in request.form: checkoutdate = request.form['checkoutdate']
-        if 'adults' in request.form: adults = request.form['adults']
-        if 'code' in request.form: code = request.form['code']
-        if 'maxflightprice' in request.form: maxflightprice = request.form['maxflightprice']
-        if 'roomQuantity' in request.form: roomQuantity = request.form['roomQuantity']
-        if 'radius' in request.form: radius = request.form['radius']
-        if 'minPrice' in request.form: minPrice = request.form['minPrice']
-        if 'maxPrice' in request.form: maxPrice = request.form['maxPrice']
+        if 'checkindate' in request.args: checkindate = request.args['checkindate']
+        if 'checkoutdate' in request.args: checkoutdate = request.args['checkoutdate']
+        if 'adults' in request.args: adults = request.args['adults']
+        if 'code' in request.args: code = request.args['code']
+        if 'maxflightprice' in request.args: maxflightprice = request.args['maxflightprice']
+        if 'roomQuantity' in request.args: roomQuantity = request.args['roomQuantity']
+        if 'radius' in request.args: radius = request.args['radius']
+        if 'minPrice' in request.args: minPrice = request.args['minPrice']
+        if 'maxPrice' in request.args: maxPrice = request.args['maxPrice']
 
-        inicia_busqueda(
+        return inicia_busqueda(
             checkindate ,
             checkoutdate,
             adults,
@@ -77,8 +78,6 @@ def message():
             minPrice,
             maxPrice
         )
-
-        return redirect('/')
     
     else:
         # Respuesta del solver SOLVED|PROBID,SOLUTION
@@ -93,6 +92,7 @@ def message():
                         problems[probid][2] = sol
                     else:  # Para el script de test de stress
                         problems[probid] = ['DUMMY', 'DUMMY', sol]
+        log.info('AQUI NO DEBERIA LLEGAR WTF')
         return 'OK'
 
 def inicia_busqueda(checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice):
@@ -102,7 +102,7 @@ def inicia_busqueda(checkindate, checkoutdate, adults, code, maxflightprice, roo
     log.info("checkindate = " + checkindate)
     log.info("checkoutdate = " + checkoutdate)
     log.info("adults = " + adults)
-    log.info("code = " + code)
+    log.info("code = " + str(code))
 
     # global diraddress
     # global busquedas
@@ -121,19 +121,42 @@ def inicia_busqueda(checkindate, checkoutdate, adults, code, maxflightprice, roo
         # Le quitamos el OK de la respuesta
         presentadd = presentadd[4:]
 
-        busquedas[busquedaid] = ['SENDING', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
+        busquedas[busquedaid] = ['PENDING', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
         log.info("presentadd: " + presentadd)
 
         mess = f'BUSQ|{busquedaid},{checkindate},{checkoutdate},{adults},{code},{maxflightprice},{roomQuantity},{radius},{minPrice},{maxPrice}'
         resp = requests.get(presentadd + '/message', params={'message': mess}).text
         if 'ERROR' not in resp:
             busquedas[busquedaid][0] = 'PENDING' #['PENDING', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
+            resultados = (ast.literal_eval(resp))
+            return mostrarResultados(resultados)
         else:
-            busquedas[busquedaid][0] = resp #['FAILED PRES', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
-            # problems[probid] = [probtype, problem, 'FAILED SOLVER']
+            busquedas[busquedaid][0] = 'ERROR: FAILED PRESENTACION'
     # Solver no encontrado
     else:
-        busquedas[busquedaid][0] = 'FAILED SERVER' #['FAILED DS', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
+        busquedas[busquedaid][0] = 'ERROR: FAILED SERVER' #['FAILED DS', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
+
+def mostrarResultados(resultados):
+    alojamientos = resultados['alojamientos']
+    # En el html, los datos de los alojamientos están ordenados como:
+    # [NOMBRE, ID, RATING, DIRECCION, DESCRIPCION, ADULTOS, PRECIO]
+    alojamientosArray = []
+    for oferta in alojamientos:
+        singleOferta = []
+        singleOferta.append(oferta['name'])
+        singleOferta.append(oferta['hotelId'])
+        singleOferta.append(oferta['rating'])
+        singleOferta.append(oferta['address'])
+        singleOferta.append(oferta['description'])
+        singleOferta.append(oferta['adults'])
+        singleOferta.append(oferta['price'])
+        alojamientosArray.append(singleOferta)
+        log.info("Cargando oferta...")
+
+    log.info("Cargando todas las ofertas en el html...")
+    log.info(alojamientosArray)
+    return render_template('ofertas.html', alojamientos=alojamientosArray)
+
 
 @app.route('/info')
 def info():
