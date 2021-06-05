@@ -45,15 +45,20 @@ def encontrarAloj(checkindate, checkoutdate, adults, roomQuantity, radius, minPr
         response = amadeus.shopping.hotel_offers.get(
             cityCode = 'BCN',
             radius=radius,
+            radiusUnit = 'KM',
             checkInDate = checkindate,
             checkOutDate = checkoutdate,
             roomQuantity = roomQuantity,
             adults = adults,
-            priceRange='{minPrice}-{maxPrice}',
-            radiusUnit = 'KM'
+            priceRange = minPrice + '-' + maxPrice,
+            currency = 'EUR'
             )
-        return response.data
+        
+        log.info('Hey el amadeus ha respodido eh')
+
+        return response.data[0]
     except ResponseError as error:
+        log.error("amadeus fucked up")
         return error
 
 @app.route("/message", methods=['GET', 'POST'])
@@ -70,6 +75,7 @@ def message():
     if '|' not in mess:
         return 'ERROR: INVALID MESSAGE'
     else:
+        log.info('Recibo mensaje')
         # Sintaxis de los mensajes "TIPO|PARAMETROS"
         mess = mess.split('|')
         if len(mess) != 2:
@@ -82,14 +88,17 @@ def message():
         else:
             # parametros mensaje SOLVE = "PROBTYPE,CLIENTADDRESS,PROBID,PROB"
             if messtype == 'BUSQALOJ':
+                log.info('Recibo petición de búsqueda de alojamiento')
                 param = messparam.split(',')
-                if len(param) == 10:
+                if len(param) == 8:
+                    log.info('Los parámetros están guays')
                     busquedaid, checkindate, checkoutdate, adults, roomQuantity, radius, minPrice, maxPrice = param
                     busquedas[busquedaid] = ['PENDING', checkindate, checkoutdate, adults, roomQuantity, radius, minPrice, maxPrice]
                     
                     alojs = encontrarAloj(checkindate, checkoutdate, adults, roomQuantity, radius, minPrice, maxPrice)
                     log.info(alojs)
                 else:
+                    log.error('WRONG PARAMETERS')
                     return 'ERROR: WRONG PARAMETERS'
             # respuesta del solver con una solucion
             elif messtype == 'SOLVED':

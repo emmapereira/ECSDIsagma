@@ -16,6 +16,7 @@ def printHotels(data):
     for hotel in data:
         hotelInfo = hotel['hotel']
         hotelName = hotelInfo['name']
+        hotelRating = hotelInfo['rating']
         hotelDescription = hotelInfo['description']['text']
         # hotelPrice = hotelInfo['price']
 

@@ -66,7 +66,7 @@ def message():
                     busquedaid, checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice = param
                     busquedas[busquedaid] = ['PENDING', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
                     
-                    alojadd = requests.get(diraddress + '/message', params = {'message': f'SEARCH|ALOJ'})
+                    alojadd = requests.get(diraddress + '/message', params = {'message': f'SEARCH|ALOJ'}).text
                     if 'OK' in alojadd:
                         # Le quitamos el OK de la respuesta
                         alojadd = alojadd[4:]
