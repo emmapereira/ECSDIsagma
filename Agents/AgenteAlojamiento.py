@@ -217,7 +217,7 @@ if __name__ == '__main__':
     else:
         diraddress = args.dir
 
-    # Registramos el solver aritmetico en el servicio de directorio
+    # Registramos el alojamiento en el servicio de directorio
     clientadd = f'http://{hostaddr}:{port}'
     clientid = hostaddr.split('.')[0] + '-' + str(port)
     agenttype = 'ALOJ'

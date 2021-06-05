@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Búsquedas del Agente de Desplazamiento
+    </title>
+<meta http-equiv="refresh" content="20">
+    <style type="text/css">
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1> Busquedas transporte</h1>
+<p></p>
+Total de búsquedas = {{busq|length}}
+<p></p>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Estado</th>
+        <th>Día de ida</th>
+        <th>Día de vuelta</th>
+        <th>Adultos</th>
+        <th>Code</th>
+        <th>Precio máximo</th>
+    </tr>
+    {% for id in busq|sort %}
+    <tr>
+        <td>{{id}}</td>
+        <td>{{busq[id][0]}}</td>
+        <td>{{busq[id][1]}}</td>
+        <td>{{busq[id][2]}}</td>
+        <td>{{busq[id][3]}}</td>
+        <td>{{busq[id][4]}}</td>
+        <td>{{busq[id][5]}}</td>
+     </tr>
+    {% endfor %}
+</table>
+
+<form  action="/info" method="get">
+    <p>
+        <button type="submit">Refresh</button>
+    </p>
+</form>
+
+</body>
+</html>
