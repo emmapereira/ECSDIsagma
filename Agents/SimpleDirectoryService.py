@@ -156,7 +156,7 @@ if __name__ == '__main__':
 
     if args.open:
         hostname = '0.0.0.0'
-        hostaddr = gethostname()
+        hostaddr = socket.gethostname()
     else:
         hostaddr = hostname = socket.gethostname()
 

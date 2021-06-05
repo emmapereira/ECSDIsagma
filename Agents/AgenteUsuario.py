@@ -29,8 +29,8 @@ __author__ = 'bejar'
 
 app = Flask(__name__)
 
-problems = {}
-probcounter = 0
+busquedas = {}
+totalbusquedas = 0
 clientid = ''
 diraddress = ''
 
@@ -42,12 +42,44 @@ def message():
 
     :return:
     """
-    global problems
+    global busquedas
+    
 
     # if request.form.has_key('message'):
     if 'message' in request.form:
-        # send_message(request.form['problem'], request.form['message'])
+        checkindate = None
+        checkoutdate = None
+        adults = None
+        code = None
+        maxflightprice = None
+        roomQuantity = None
+        radius = None
+        minPrice = None
+        maxPrice = None
+        if 'checkindate' in request.form: checkindate = request.form['checkindate']
+        if 'checkoutdate' in request.form: checkoutdate = request.form['checkoutdate']
+        if 'adults' in request.form: adults = request.form['adults']
+        if 'code' in request.form: code = request.form['code']
+        if 'maxflightprice' in request.form: maxflightprice = request.form['maxflightprice']
+        if 'roomQuantity' in request.form: roomQuantity = request.form['roomQuantity']
+        if 'radius' in request.form: radius = request.form['radius']
+        if 'minPrice' in request.form: minPrice = request.form['minPrice']
+        if 'maxPrice' in request.form: maxPrice = request.form['maxPrice']
+
+        inicia_busqueda(
+            checkindate ,
+            checkoutdate,
+            adults,
+            code,
+            maxflightprice,
+            roomQuantity,
+            radius,
+            minPrice,
+            maxPrice
+        )
+
         return redirect('/')
+    
     else:
         # Respuesta del solver SOLVED|PROBID,SOLUTION
         mess = request.args['message'].split('|')
@@ -63,6 +95,45 @@ def message():
                         problems[probid] = ['DUMMY', 'DUMMY', sol]
         return 'OK'
 
+def inicia_busqueda(checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice):
+    if checkindate is None: checkindate = ''
+    if checkoutdate is None: checkoutdate = ''
+    if adults is None: adults = ''
+    log.info("checkindate = " + checkindate)
+    log.info("checkoutdate = " + checkoutdate)
+    log.info("adults = " + adults)
+    log.info("code = " + code)
+
+    # global diraddress
+    # global busquedas
+    # global clientid
+    # global port
+    global totalbusquedas
+
+    busquedaid = f'{clientid}-{totalbusquedas:03}'
+    totalbusquedas += 1
+
+    # Enviar petición al Server para recibir la dirección de un Agente de Presentación
+    presentadd = requests.get(diraddress + '/message', params={'message': f'SEARCH|PRES'}).text
+
+    if 'OK' in presentadd:
+
+        # Le quitamos el OK de la respuesta
+        presentadd = presentadd[4:]
+
+        busquedas[busquedaid] = ['SENDING', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
+        log.info("presentadd: " + presentadd)
+
+        mess = f'BUSQ|{busquedaid},{checkindate},{checkoutdate},{adults},{code},{maxflightprice},{roomQuantity},{radius},{minPrice},{maxPrice}'
+        resp = requests.get(presentadd + '/message', params={'message': mess}).text
+        if 'ERROR' not in resp:
+            busquedas[busquedaid][0] = 'PENDING' #['PENDING', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
+        else:
+            busquedas[busquedaid][0] = resp #['FAILED PRES', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
+            # problems[probid] = [probtype, problem, 'FAILED SOLVER']
+    # Solver no encontrado
+    else:
+        busquedas[busquedaid][0] = 'FAILED SERVER' #['FAILED DS', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
 
 @app.route('/info')
 def info():
@@ -71,7 +142,7 @@ def info():
     """
     global problems
 
-    return render_template('clientproblems.html', probs=problems)
+    return render_template('busquedas_usuario.html', busq=busquedas)
 
 
 @app.route('/')
@@ -153,8 +224,8 @@ if __name__ == '__main__':
 
     # parsing de los parametros de la linea de comandos
     args = parser.parse_args()
+    log = logging.getLogger('werkzeug')
     if not args.verbose:
-        log = logging.getLogger('werkzeug')
         log.setLevel(logging.ERROR)
 
     # Configuration stuff
@@ -165,19 +236,37 @@ if __name__ == '__main__':
 
     if args.open:
         hostname = '0.0.0.0'
-        hostaddr = gethostname()
+        hostaddr = socket.gethostname()
     else:
         hostaddr = hostname = socket.gethostname()
 
     print('DS Hostname =', hostaddr)
-
-    clientadd = f'http://{hostaddr}:{port}'
-    clientid = hostaddr.split('.')[0] + '-' + str(port)
 
     if args.dir is None:
         raise NameError('A Directory Service addess is needed')
     else:
         diraddress = args.dir
 
-    # Ponemos en marcha el servidor Flask
-    app.run(host=hostname, port=port, debug=False, use_reloader=False)
+    # Registramos el solver aritmetico en el servicio de directorio
+    clientadd = f'http://{hostaddr}:{port}'
+    clientid = hostaddr.split('.')[0] + '-' + str(port)
+    agenttype = 'CLIENT'
+    mess = f'REGISTER|{clientid},{agenttype},{clientadd}'
+
+    done = False
+    while not done:
+        try:
+            resp = requests.get(diraddress + '/message', params={'message': mess}).text
+            done = True
+        except ConnectionError:
+            pass
+
+    if 'OK' in resp:
+        print(f'{agenttype} {clientid} successfully registered')
+        # Ponemos en marcha el servidor Flask
+        app.run(host=hostname, port=port, debug=False, use_reloader=False)
+
+        mess = f'UNREGISTER|{clientid}'
+        requests.get(diraddress + '/message', params={'message': mess})
+    else:
+        print('Unable to register')
