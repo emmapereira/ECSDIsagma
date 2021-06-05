@@ -127,8 +127,8 @@ def inicia_busqueda(checkindate, checkoutdate, adults, code, maxflightprice, roo
         mess = f'BUSQ|{busquedaid},{checkindate},{checkoutdate},{adults},{code},{maxflightprice},{roomQuantity},{radius},{minPrice},{maxPrice}'
         resp = requests.get(presentadd + '/message', params={'message': mess}).text
         if 'ERROR' not in resp:
-            busquedas[busquedaid][0] = 'PENDING' #['PENDING', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
             resultados = (ast.literal_eval(resp))
+            busquedas[busquedaid][0] = 'DONE'
             return mostrarResultados(resultados)
         else:
             busquedas[busquedaid][0] = 'ERROR: FAILED PRESENTACION'
@@ -153,9 +153,21 @@ def mostrarResultados(resultados):
         alojamientosArray.append(singleOferta)
         log.info("Cargando oferta...")
 
+
+    transportes = resultados['transportes']
+
+    transportesArray = []
+    for oferta in transportes:
+        singleOferta = []
+        singleOferta.append(oferta['salida'])
+        singleOferta.append(oferta['llegada'])
+        singleOferta.append(oferta['companyia'])
+        singleOferta.append(oferta['number'])
+        singleOferta.append(oferta['price'])
+
     log.info("Cargando todas las ofertas en el html...")
     log.info(alojamientosArray)
-    return render_template('ofertas.html', alojamientos=alojamientosArray)
+    return render_template('ofertas.html', alojamientos=alojamientosArray, transportes = transportesArray)
 
 
 @app.route('/info')

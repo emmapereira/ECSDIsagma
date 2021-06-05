@@ -95,12 +95,37 @@ def message():
                     ################################################################################
                     
                     ######### BUSQUEDA DE TRANSPORTES #############################################
-                    # despues copiar lo mismo pero con TRANS
+                    log.info('Buscando agente de Desplazamiento')
+                    transadd = requests.get(diraddress + '/message', params = {'message': f'SEARCH|TRANS'}).text
+                    if 'OK' in transadd:
+                        log.info('Agente de desplazamiento encontrado')
+                        # Le quitamos el OK de la respuesta
+                        transadd = transadd[4:]
+
+                        busquedas[busquedaid][0] = 'SENDING' #= ['SENDING', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
+
+                        log.info('Enviando mensaje al agente de desplazamiento')
+
+                        mess = f'BUSQTRANS|{busquedaid},{checkindate},{checkoutdate},{adults},{code},{maxflightprice}'
+                        resp = requests.get(transadd + '/message', params={'message': mess}).text
+                        if 'ERROR' not in resp:
+                            log.info('Respuesta de desplazamiento recibida:')
+                            log.info(resp)
+
+                            transportes = (ast.literal_eval(resp))
+                            
+                            busquedas[busquedaid][0] = 'PENDING' #['PENDING', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
+                        else:
+                            busquedas[busquedaid][0] = 'ERROR: ERROR BUSCANDO TRANSPORTES'
+                            return 'ERROR: ERROR BUSCANDO TRANSPORTES'
+                    else:
+                        busquedas[busquedaid][0] = 'ERROR: NO TRANS AVAILABLE'
+                        return 'ERROR: NO TRANS AVAILABLE'
                     ################################################################################
 
                     resultado = {}
                     resultado['alojamientos'] = alojamientos
-                    # resultado['transportes'] = transportes
+                    resultado['transportes'] = transportes
 
                     busquedas[busquedaid][0] = 'DONE'
                     return resultado

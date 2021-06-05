@@ -39,6 +39,31 @@ Total de alojamientos encontrados = {{alojamientos|length}}
     {% endfor %}
 </table>
 
+
+<h1>Ofertas de transporte</h1>
+<p></p>
+Total de transportes encontrados = {{transportes|length}}
+<p></p>
+<table>
+    <tr>
+        <th>Hora de salida</th>
+        <th>Hora de llegada</th>
+        <th>Código de la compañía</th>
+        <th>Número de vuelo</th>
+        <th>Precio</th>
+    </tr>
+    {% for singleTransporte in transportes|sort %}
+    <tr>
+        <td>{{singleTransporte[0]}}</td>
+        <td>{{singleTransporte[1]}}</td>
+        <td>{{singleTransporte[2]}}</td>
+        <td>{{singleTransporte[3]}}</td>
+        <td>{{singleTransporte[4]}}</td>
+     </tr>
+    {% endfor %}
+</table>
+
+
 <form  action="/info" method="get">
     <p>
         <button type="submit">Refresh</button>
