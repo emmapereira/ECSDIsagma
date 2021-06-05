@@ -24,8 +24,9 @@ import requests
 from flask import Flask, request, render_template, url_for, redirect
 import logging
 import socket
+from amadeus import Client, ResponseError
 
-__author__ = 'bejar'
+__author__ = 'sagma'
 
 app = Flask(__name__)
 
@@ -34,6 +35,26 @@ totalbusquedas = 0
 clientid = ''
 diraddress = ''
 
+amadeus = Client(
+    client_id='Gu3svGYecxv4aPs2fusVIEloak3YSVxU',
+    client_secret='aektZUqvk4SbaZns'
+    )
+
+def encontrarAloj(checkindate, checkoutdate, adults, roomQuantity, radius, minPrice, maxPrice):
+    try:
+        response = amadeus.shopping.hotel_offers.get(
+            cityCode = 'BCN',
+            radius=radius,
+            checkInDate = checkindate,
+            checkOutDate = checkoutdate,
+            roomQuantity = roomQuantity,
+            adults = adults,
+            priceRange='{minPrice}-{maxPrice}',
+            radiusUnit = 'KM'
+            )
+        return response.data
+    except ResponseError as error:
+        return error
 
 @app.route("/message", methods=['GET', 'POST'])
 def message():
@@ -66,24 +87,8 @@ def message():
                     busquedaid, checkindate, checkoutdate, adults, roomQuantity, radius, minPrice, maxPrice = param
                     busquedas[busquedaid] = ['PENDING', checkindate, checkoutdate, adults, roomQuantity, radius, minPrice, maxPrice]
                     
-                    alojadd = requests.get(diraddress + '/message', params = {'message': f'SEARCH|ALOJ'})
-                    if 'OK' in alojadd:
-                        # Le quitamos el OK de la respuesta
-                        alojadd = alojadd[4:]
-
-                        busquedas[busquedaid][0] = 'SENDING' #= ['SENDING', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
-
-                        mess = f'BUSQALOJ|{busquedaid},{checkindate},{checkoutdate},{adults},{roomQuantity},{radius},{minPrice},{maxPrice}'
-                        resp = requests.get(alojadd + '/message', params={'message': mess}).text
-                        if 'ERROR' not in resp:
-                            busquedas[busquedaid][0] = 'PENDING' #['PENDING', checkindate, checkoutdate, adults, code, maxflightprice, roomQuantity, radius, minPrice, maxPrice]
-                        else:
-                            busquedas[busquedaid][0] = 'FAILED ALOJ'
-                    else:
-                        busquedas[busquedaid][0] = 'FAILED SERVER'
-                        return 'ERROR: NO ALOJ AVAILABLE'
-                    
-                    # despues copiar lo mismo pero con TRANS
+                    alojs = encontrarAloj(checkindate, checkoutdate, adults, roomQuantity, radius, minPrice, maxPrice)
+                    log.info(alojs)
                 else:
                     return 'ERROR: WRONG PARAMETERS'
             # respuesta del solver con una solucion
