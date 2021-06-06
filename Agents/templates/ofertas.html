@@ -11,30 +11,32 @@
 </head>
 
 <body>
+<form action="/checkout", method="post">
 
 <h1>Ofertas de alojamientos</h1>
 <p></p>
 Total de alojamientos encontrados = {{alojamientos|length}}
 <p></p>
-<table>
+<table id="alojs">
     <tr>
+        <th>Seleccionar hotel</th>
         <th>Nombre del hotel</th>
         <th>Id del hotel</th>
         <th>Valoración del hotel</th>
         <th>Dirección</th>
         <th>Descripción de la habitación</th>
         <th>Adultos</th>
-        <th>Precio</th>
     </tr>
-    {% for singleAlojamiento in alojamientos|sort %}
+    {% for singleAlojamiento in alojamientos %}
     <tr>
-        <td>{{singleAlojamiento[0]}}</td>
+        <td><input type="radio" name="alojamientoSeleccionado" value={{singleAlojamiento[0]}} required/> {{singleAlojamiento[7]}} €</td>
         <td>{{singleAlojamiento[1]}}</td>
         <td>{{singleAlojamiento[2]}}</td>
         <td>{{singleAlojamiento[3]}}</td>
         <td>{{singleAlojamiento[4]}}</td>
         <td>{{singleAlojamiento[5]}}</td>
         <td>{{singleAlojamiento[6]}}</td>
+        <!-- <td>{{singleAlojamiento[6]}}</td> -->
      </tr>
     {% endfor %}
 </table>
@@ -44,17 +46,17 @@ Total de alojamientos encontrados = {{alojamientos|length}}
 <p></p>
 Total de transportes encontrados = {{transportes|length}}
 <p></p>
-<table>
+<table id="trans">
     <tr>
+        <th>Seleccionar vuelo</th>
         <th>Hora de salida</th>
         <th>Hora de llegada</th>
         <th>Código de la compañía</th>
         <th>Número de vuelo</th>
-        <th>Precio</th>
     </tr>
-    {% for singleTransporte in transportes|sort %}
+    {% for singleTransporte in transportes%}
     <tr>
-        <td>{{singleTransporte[0]}}</td>
+        <td><input type="radio" name="transporteSeleccionado" value={{singleTransporte[0]}} required/> {{singleTransporte[5]}} €</td>
         <td>{{singleTransporte[1]}}</td>
         <td>{{singleTransporte[2]}}</td>
         <td>{{singleTransporte[3]}}</td>
@@ -63,10 +65,8 @@ Total de transportes encontrados = {{transportes|length}}
     {% endfor %}
 </table>
 
-
-<form  action="/ofertas" method="get">
     <p>
-        <button type="submit">Refresh</button>
+        <button type="submit">Comprar</button>
     </p>
 </form>
 

@@ -214,79 +214,73 @@
   </head>
   <body>
     <div class="testbox">
-    <form action="/message" method="GET">
+    <form action="/message" method="post">
       <div class="banner">
-        <h1>Buscar Itinerario</h1>
+        <h1>Valorar Itinerario</h1>
       </div>
       <br/>
+      
       <fieldset>
-        <legend>Detalles generales del viaje</legend>
+        <legend>Información del itinerario seleccionado</legend>
+        <table id="alojamiento">
+            <tr>
+                <!-- <th>Seleccionar hotel</th> -->
+                <th>Nombre del hotel</th>
+                <th>Id del hotel</th>
+                <!-- <th>Valoración del hotel</th> -->
+                <th>Dirección</th>
+                <!-- <th>Descripción de la habitación</th> -->
+                <th>Adultos</th>
+                <th>Precio</th>
+            </tr>
+            <tr>
+                <td>{{alojamiento[1]}}</td>
+                <td>{{alojamiento[2]}}</td>
+                <td>{{alojamiento[4]}}</td>
+                <td>{{alojamiento[6]}}</td>
+                <td>{{alojamiento[7]}} €</td>
+            </tr>
+        </table>
+
+        <table id="transporte">
+            <tr>
+                <!-- <th>Seleccionar vuelo</th> -->
+                <th>Hora de salida</th>
+                <th>Hora de llegada</th>
+                <th>Código de la compañía</th>
+                <th>Número de vuelo</th>
+                <th>Precio</th>
+            </tr>
+            <tr>
+                <td>{{transporte[1]}}</td>
+                <td>{{transporte[2]}}</td>
+                <td>{{transporte[3]}}</td>
+                <td>{{transporte[4]}}</td>
+                <td>{{transporte[5]}} €</td>
+             </tr>
+        </table>
+
+        <label>Precio total: {{preciototal}} €</label>
+
         <div class="columns">
-            <div class="item">
-                <label for="checkindate">Día de ida <span>*</span></label>
-                <input id="checkindate" type="date" name="checkindate" required/>
-                <i class="fas fa-calendar-alt"></i>
+            
+         </div>
+        </fieldset>
 
-                
-            </div>
-            <div class="item">
-                <label for="checkoutdate">Día de vuelta <span>*</span></label>
-                <input id="checkoutdate" type="date" name="checkoutdate" required/>
-                <i class="fas fa-calendar-alt"></i>
-            </div>
-      <div class="item">
-      <label for="adults">¿Cuántos adultos van?<span>*</span></label>
-      <input id="adults" type="number" name="adults" required/>
-      </div>
-      </fieldset>
       <br/>
       <fieldset>
-
-
-      <legend>Detalles del transporte</legend>
+      <legend>Valoración</legend>
       <div class="columns">
           <div class="item">
-            <label for="code">Código del aeropuerto de salida<span>*</span></label>
-            <input id="code" type="text" name="code" required/>
+            <label for="rating">Incluye tu valoración<span></span></label>
+            <input id="rating" type="text" name="rating"/>
           </div>
-      <div class="item">
-      <p>Tipo de viaje <span>*</span> </p>
-      <select>
-      <option value="1" >Ida y vuelta</option>
-      <option value="2">Sólo ida</option>
-      </select>
-      </div>
-      <div class="item">
-      <label for="room">Precio máximo</label>
-      <input id="maxflightprice" type="number" name="maxflightprice" required/>
-      </div>
        </div>
       </fieldset>
       <br/>
 
-
-      <fieldset>
-      <legend>Detalles del alojamiento</legend>
-      <div class="columns">
-       <div class="item">
-      <label for="roomQuantity">Número de habitaciones <span>*</span></label>
-      <input id="roomQuantity" type="number" name="roomQuantity" required/> 
-      </div>
-       <div class="item">
-      <label for="radius">Distancia</label>
-      <input id="radius" type="number" name="radius" required/>
-      </div>
-       <div class="item">
-      <label for="minPrice">Precio mínimo <span>*</span></label>
-      <input id="minPrice" type="number" name="minPrice" required/> 
-      </div>
-       <div class="item">
-      <label for="maxPrice">Precio máximo <span>*</span></label>
-      <input id="maxPrice" type="number" name="maxPrice" required/> 
-      </div>
-    </fieldset>
     <div class="btn-block">
-    <button type="submit" name="message" value='search'>Buscar</button>
+    <button type="submit" name="message" value='rating'>Guardar</button>
     </div>
   </form>
     </div>

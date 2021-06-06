@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Búsquedas del agente</title>
+<meta http-equiv="refresh" content="20">
+    <style type="text/css">
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1> Pagos realizados</h1>
+<p></p>
+Total de pagos procesados = {{pagos|length}}
+<p></p>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Estado</th>
+        <th>Nombre</th>
+        <th>IBAN</th>
+    </tr>
+    {% for id in pagos|sort %}
+    <tr>
+        <td>{{id}}</td>
+        <td>{{busq[id][0]}}</td>
+        <td>{{busq[id][1]}}</td>
+        <td>{{busq[id][2]}}</td>
+        <td>{{busq[id][3]}}</td>
+     </tr>
+    {% endfor %}
+</table>
+
+<form  action="/info" method="get">
+    <p>
+        <button type="submit">Refresh</button>
+    </p>
+</form>
+
+</body>
+</html>

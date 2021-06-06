@@ -83,7 +83,17 @@ def encontrarAloj(checkindate, checkoutdate, adults, roomQuantity, radius, minPr
         return ofertas
     except ResponseError as error:
         log.error("amadeus fucked up")
-        return error
+        return []
+
+
+def guardarAlojamientos(alojamientos):
+    DBalojamientos = open("DB/alojamientos.txt", "a+")
+    for oferta in alojamientos:
+        for key, value in oferta.items():
+            DBalojamientos.write("[{}]: {}\n".format(key, value))
+        DBalojamientos.write("\n")
+    DBalojamientos.close()
+
 
 @app.route("/message", methods=['GET', 'POST'])
 def message():
@@ -121,6 +131,12 @@ def message():
                     
                     alojs = encontrarAloj(checkindate, checkoutdate, adults, roomQuantity, radius, minPrice, maxPrice)
                     
+                    log.info(alojs)
+                    busquedas[busquedaid][0] = 'SAVING'
+                    guardarAlojamientos(alojs)
+
+                    busquedas[busquedaid][0] = 'DONE'
+
                     return str(alojs)
                 else:
                     log.error('WRONG PARAMETERS')

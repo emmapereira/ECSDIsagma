@@ -60,13 +60,26 @@ def encontrarTrans(checkindate, checkoutdate, adults, code, maxflightprice):
             # NOMBRE, DIRECCIÓN, HABITACIONES, CAMAS, PRECIO, 
             oferta = {}
 
-            oferta['price'] = element['price']
+            oferta['price'] = element['price']['total']
+            # oferta['companya'] = element['validatingAirlineCodes'][0]
 
             for itinerario in element['itineraries']:
-                oferta['salida'] = itinerario['segments'][0]['departure']['at']
-                oferta['llegada'] = itinerario['arrival']
-                oferta['companyia'] = itinerario['carrierCode']
-                oferta['number'] = itinerario['number']
+
+                salida = itinerario['segments'][0]['departure']['at']
+                salida = salida.replace("T", " ")
+                oferta['salida'] = salida
+
+                llegada = itinerario['segments'][0]['arrival']['at']
+                llegada = llegada.replace("T", " ")
+                oferta['llegada'] = llegada
+
+                # oferta['llegada'] = itinerario['segments'][0]['arrival']['at']
+                oferta['companyia'] = itinerario['segments'][0]['carrierCode']
+                oferta['number'] = itinerario['segments'][0]['number']
+                # oferta['companyia'] = itinerario['carrierCode']
+                # oferta['number'] = itinerario['number']
+                # oferta['salida'].replace('T', ' ')
+                # oferta['llegada'].replace('T', ' ')
 
                 ofertas.append(oferta)
                 if len(ofertas) >= maxOfertas: return ofertas
@@ -75,7 +88,7 @@ def encontrarTrans(checkindate, checkoutdate, adults, code, maxflightprice):
     except ResponseError as error:
         log.error("amadeus fucked up")
         log.error(error)
-        return error
+        return []
 
 @app.route("/message", methods=['GET', 'POST'])
 def message():
@@ -114,6 +127,11 @@ def message():
                     busquedas[busquedaid] = ['PENDING', checkindate, checkoutdate, adults, code, maxflightprice]
                     
                     trans = encontrarTrans(checkindate, checkoutdate, adults, code, maxflightprice)
+                    log.info(trans)
+                    busquedas[busquedaid][0] = 'SAVING'
+                    guardarTransportes(trans)
+
+                    busquedas[busquedaid][0] = 'DONE'
                     
                     return str(trans)
                 else:
@@ -132,6 +150,14 @@ def message():
                 return 'OK'
     return ''
 
+
+def guardarTransportes(transportes):
+    DBtransportes = open("DB/transportes.txt", "a+")
+    for oferta in transportes:
+        for key, value in oferta.items():
+            DBtransportes.write("[{}]: {}\n".format(key, value))
+        DBtransportes.write("\n")
+    DBtransportes.close()
 
 @app.route('/info')
 def info():
