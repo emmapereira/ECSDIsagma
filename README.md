@@ -1,4 +1,5 @@
 # ECSDI 2020/2021
+Python Project.
 
 Agnés Masip, Emma Pereira, Carlos Sansón
 
